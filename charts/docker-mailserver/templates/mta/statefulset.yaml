@@ -15,6 +15,7 @@ spec:
   {{- if .Values.mta.updateStrategy }}
   updateStrategy: {{- toYaml .Values.mta.updateStrategy | nindent 4 }}
   {{- end }}
+  serviceName: {{ include "docker-mailserver.mta" . }}-headless
   {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.mta.podLabels .Values.commonLabels ) "context" . ) }}
   selector:
     matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 6 }}
@@ -103,7 +104,11 @@ spec:
           volumeMounts:
             - name: postfix
               mountPath: /etc/postfix
-        - name: chown-postfix
+            - name: tmp
+              mountPath: /var/lib/postfix
+            - name: spool
+              mountPath: /var/spool/postfix
+        - name: prepare-postfix-runtime
           image: {{ include "docker-mailserver.mta.image" . }}
           imagePullPolicy: {{ .Values.mta.image.pullPolicy }}
           {{- if .Values.mta.containerSecurityContext.enabled }}
@@ -114,7 +119,8 @@ spec:
             - -ec
             - |
               chown -R postfix /var/lib/postfix
-              chmod 700 /var/lib/postfix
+              chown postfix /var/spool/postfix
+              chmod 700 /var/lib/postfix /var/spool/postfix
           env:
             {{- if .Values.mta.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.mta.extraEnvVars "context" $) | nindent 12 }}
@@ -124,6 +130,8 @@ spec:
               mountPath: /etc/postfix
             - name: tmp
               mountPath: /var/lib/postfix
+            - name: spool
+              mountPath: /var/spool/postfix
         {{- if .Values.mta.initContainers }}
           {{- include "common.tplvalues.render" (dict "value" .Values.mta.initContainers "context" $) | nindent 8 }}
         {{- end }}
@@ -189,6 +197,8 @@ spec:
               readOnly: true
             - name: tmp
               mountPath: /var/lib/postfix
+            - name: spool
+              mountPath: /var/spool/postfix
             - name: tls-certs
               mountPath: /media/tls
               readOnly: true
@@ -214,6 +224,8 @@ spec:
         - name: tmp
           emptyDir: {}
         - name: postfix
+          emptyDir: {}
+        - name: spool
           emptyDir: {}
         {{- if .Values.mta.extraVolumes }}
         {{- include "common.tplvalues.render" (dict "value" .Values.mta.extraVolumes "context" $) | nindent 8 }}

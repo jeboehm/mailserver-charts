@@ -18,10 +18,12 @@ data:
     REDIS_HOST: {{ include "docker-mailserver.redisHost" . | quote }}
     REDIS_PORT: {{ include "docker-mailserver.redisPort" . | quote }}
 
-    MDA_HOST: {{ include "docker-mailserver.mda" . | quote }}
-    MTA_HOST: {{ include "docker-mailserver.mta" . | quote }}
-    RSPAMD_HOST: {{ include "docker-mailserver.filter" . | quote }}
+    MDA_HOST: {{ printf "%s-headless" (include "docker-mailserver.mda" .) | quote }}
+    MTA_HOST: {{ printf "%s-headless" (include "docker-mailserver.mta" .) | quote }}
+    FILTER_HOST: {{ printf "%s-headless" (include "docker-mailserver.filter" .) | quote }}
+    FILTER_VIRUS_HOST: {{ printf "%s-headless" (include "docker-mailserver.virus" .) | quote }}
 
+    RSPAMD_HOST: {{ printf "%s-headless" (include "docker-mailserver.filter" .) | quote }} # TODO Obsolete
     MAILNAME: {{ .Values.config.mailname | quote }}
     POSTMASTER: {{ .Values.config.postmaster | quote }}
 
@@ -33,10 +35,7 @@ data:
 
     ENABLE_IMAP: "true"
     ENABLE_POP3: "true"
-
     FILTER_VIRUS: "true"
-    FILTER_VIRUS_HOST: {{ include "docker-mailserver.virus" . | quote }}
-    FILTER_HOST: {{ include "docker-mailserver.filter" . | quote }}
 
     ENABLE_FTS: "true"
     FTS_ARGS: partial=3 full=20 verbose=0 lowmemory=256

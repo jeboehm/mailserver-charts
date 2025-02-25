@@ -15,6 +15,7 @@ spec:
   {{- if .Values.filter.updateStrategy }}
   updateStrategy: {{- toYaml .Values.filter.updateStrategy | nindent 4 }}
   {{- end }}
+  serviceName: {{ include "docker-mailserver.filter" . }}-headless
   {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.filter.podLabels .Values.commonLabels ) "context" . ) }}
   selector:
     matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 6 }}

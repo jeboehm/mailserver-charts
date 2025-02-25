@@ -1,0 +1,20 @@
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "docker-mailserver.virus" . }}-headless
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
+    app.kubernetes.io/component: virus
+spec:
+  clusterIP: None
+  type: ClusterIP
+  {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.virus.podLabels .Values.commonLabels ) "context" . ) }}
+  selector: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 4 }}
+    app.kubernetes.io/component: virus
+  ports:
+    - name: clamav
+      port: 3310
+      targetPort: 3310
+      protocol: TCP
