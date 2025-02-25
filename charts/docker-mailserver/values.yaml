@@ -306,14 +306,6 @@ mta:
   ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
   tolerations: []
-
-  ## @param extraContainerPorts Optionally specify extra list of additional ports for docker-mailserver container(s)
-  ## e.g:
-  ## extraContainerPorts:
-  ##   - name: myservice
-  ##     containerPort: 9090
-  ##
-  extraContainerPorts: []
   ## @param sessionAffinity Control where client requests go, to the same pod or round-robin. Values: ClientIP or None
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/
   ##
@@ -450,58 +442,6 @@ mta:
   podLabels: {}
   ## @section Traffic Exposure Parameters
   ##
-  internalService:
-    ## @param controller.service.type Argo CD service type
-    ##
-    type: ClusterIP
-    ## @param controller.service.ports.metrics Argo CD application controller service port
-    ##
-    ports:
-      smtp: 25
-      submission: 587
-    ## Node ports to expose
-    ## @param controller.service.nodePorts.metrics Node port for Argo CD application controller service
-    ## NOTE: choose port between <30000-32767>
-    ##
-    nodePorts:
-      smtp: ''
-      submission: ''
-    ## @param controller.service.clusterIP Argo CD application controller service Cluster IP
-    ## e.g.:
-    ## clusterIP: None
-    ##
-    clusterIP: ''
-    ## @param controller.service.loadBalancerIP Argo CD application controller service Load Balancer IP
-    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
-    ##
-    loadBalancerIP: ''
-    ## @param controller.service.loadBalancerSourceRanges Argo CD application controller service Load Balancer sources
-    ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
-    ## e.g:
-    ## loadBalancerSourceRanges:
-    ##   - 10.10.10.0/24
-    ##
-    loadBalancerSourceRanges: []
-    ## @param controller.service.externalTrafficPolicy Argo CD application controller service external traffic policy
-    ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
-    ##
-    externalTrafficPolicy: Cluster
-    ## @param controller.service.annotations Additional custom annotations for Argo CD application controller service
-    ##
-    annotations: {}
-    ## @param controller.service.extraPorts Extra ports to expose (normally used with the `sidecar` value)
-    ##
-    extraPorts: []
-    ## @param controller.service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
-    ## If "ClientIP", consecutive client requests will be directed to the same Pod
-    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
-    ##
-    sessionAffinity: None
-    ## @param controller.service.sessionAffinityConfig Additional settings for the sessionAffinity
-    ## sessionAffinityConfig:
-    ##   clientIP:
-    ##     timeoutSeconds: 300
-    sessionAffinityConfig: {}
   service:
     ## @param service.enabled Enable public facing mta service
     ##
@@ -660,14 +600,6 @@ mda:
   ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
   tolerations: []
-
-  ## @param extraContainerPorts Optionally specify extra list of additional ports for docker-mailserver container(s)
-  ## e.g:
-  ## extraContainerPorts:
-  ##   - name: myservice
-  ##     containerPort: 9090
-  ##
-  extraContainerPorts: []
   ## @param sessionAffinity Control where client requests go, to the same pod or round-robin. Values: ClientIP or None
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/
   ##
@@ -799,65 +731,6 @@ mda:
   ##
   podLabels: {}
   ## @section Traffic Exposure Parameters
-  ##
-  internalService:
-    ## @param controller.service.type Argo CD service type
-    ##
-    type: ClusterIP
-    ## @param controller.service.ports.metrics Argo CD application controller service port
-    ##
-    ports:
-      imap: 143
-      lmtp: 2003
-      auth: 2004
-      managesieve: 4190
-    ## Node ports to expose
-    ## @param controller.service.nodePorts.metrics Node port for Argo CD application controller service
-    ## NOTE: choose port between <30000-32767>
-    ##
-    nodePorts:
-      imap: ''
-      lmtp: ''
-      auth: ''
-      managesieve: ''
-    ## @param controller.service.clusterIP Argo CD application controller service Cluster IP
-    ## e.g.:
-    ## clusterIP: None
-    ##
-    clusterIP: ''
-    ## @param controller.service.loadBalancerIP Argo CD application controller service Load Balancer IP
-    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
-    ##
-    loadBalancerIP: ''
-    ## @param controller.service.loadBalancerSourceRanges Argo CD application controller service Load Balancer sources
-    ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
-    ## e.g:
-    ## loadBalancerSourceRanges:
-    ##   - 10.10.10.0/24
-    ##
-    loadBalancerSourceRanges: []
-    ## @param controller.service.externalTrafficPolicy Argo CD application controller service external traffic policy
-    ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
-    ##
-    externalTrafficPolicy: Cluster
-    ## @param controller.service.annotations Additional custom annotations for Argo CD application controller service
-    ##
-    annotations: {}
-    ## @param controller.service.extraPorts Extra ports to expose (normally used with the `sidecar` value)
-    ##
-    extraPorts: []
-    ## @param controller.service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
-    ## If "ClientIP", consecutive client requests will be directed to the same Pod
-    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
-    ##
-    sessionAffinity: None
-    ## @param controller.service.sessionAffinityConfig Additional settings for the sessionAffinity
-    ## sessionAffinityConfig:
-    ##   clientIP:
-    ##     timeoutSeconds: 300
-    sessionAffinityConfig: {}
-
-  ## Kubernetes configuration. For minikube, set this to NodePort, elsewhere use LoadBalancer
   ##
   service:
     ## @param service.enabled Enable external service for docker-mailserver
@@ -1014,14 +887,6 @@ virus:
   ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
   tolerations: []
-
-  ## @param extraContainerPorts Optionally specify extra list of additional ports for docker-mailserver container(s)
-  ## e.g:
-  ## extraContainerPorts:
-  ##   - name: myservice
-  ##     containerPort: 9090
-  ##
-  extraContainerPorts: []
   ## @param sessionAffinity Control where client requests go, to the same pod or round-robin. Values: ClientIP or None
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/
   ##
@@ -1161,58 +1026,7 @@ virus:
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   ##
   podLabels: {}
-  ## @section Traffic Exposure Parameters
-  ##
-  service:
-    ## @param controller.service.type Argo CD service type
-    ##
-    type: ClusterIP
-    ## @param controller.service.ports.metrics Argo CD application controller service port
-    ##
-    ports:
-      clamav: 3310
-    ## Node ports to expose
-    ## @param controller.service.nodePorts.metrics Node port for Argo CD application controller service
-    ## NOTE: choose port between <30000-32767>
-    ##
-    nodePorts:
-      clamav: ''
-    ## @param controller.service.clusterIP Argo CD application controller service Cluster IP
-    ## e.g.:
-    ## clusterIP: None
-    ##
-    clusterIP: ''
-    ## @param controller.service.loadBalancerIP Argo CD application controller service Load Balancer IP
-    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
-    ##
-    loadBalancerIP: ''
-    ## @param controller.service.loadBalancerSourceRanges Argo CD application controller service Load Balancer sources
-    ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
-    ## e.g:
-    ## loadBalancerSourceRanges:
-    ##   - 10.10.10.0/24
-    ##
-    loadBalancerSourceRanges: []
-    ## @param controller.service.externalTrafficPolicy Argo CD application controller service external traffic policy
-    ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
-    ##
-    externalTrafficPolicy: Cluster
-    ## @param controller.service.annotations Additional custom annotations for Argo CD application controller service
-    ##
-    annotations: {}
-    ## @param controller.service.extraPorts Extra ports to expose (normally used with the `sidecar` value)
-    ##
-    extraPorts: []
-    ## @param controller.service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
-    ## If "ClientIP", consecutive client requests will be directed to the same Pod
-    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
-    ##
-    sessionAffinity: None
-    ## @param controller.service.sessionAffinityConfig Additional settings for the sessionAffinity
-    ## sessionAffinityConfig:
-    ##   clientIP:
-    ##     timeoutSeconds: 300
-    sessionAffinityConfig: {}
+
 ## @section filter - Mail filter parameters
 filter:
   ## virus image version
@@ -1309,14 +1123,6 @@ filter:
   ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
   tolerations: []
-
-  ## @param extraContainerPorts Optionally specify extra list of additional ports for docker-mailserver container(s)
-  ## e.g:
-  ## extraContainerPorts:
-  ##   - name: myservice
-  ##     containerPort: 9090
-  ##
-  extraContainerPorts: []
   ## @param sessionAffinity Control where client requests go, to the same pod or round-robin. Values: ClientIP or None
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/
   ##
@@ -1454,60 +1260,7 @@ filter:
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   ##
   podLabels: {}
-  ## @section Traffic Exposure Parameters
-  ##
-  service:
-    ## @param controller.service.type Argo CD service type
-    ##
-    type: ClusterIP
-    ## @param controller.service.ports.metrics Argo CD application controller service port
-    ##
-    ports:
-      controller: 11334
-      worker: 11332
-    ## Node ports to expose
-    ## @param controller.service.nodePorts.metrics Node port for Argo CD application controller service
-    ## NOTE: choose port between <30000-32767>
-    ##
-    nodePorts:
-      controller: ''
-      worker: ''
-    ## @param controller.service.clusterIP Argo CD application controller service Cluster IP
-    ## e.g.:
-    ## clusterIP: None
-    ##
-    clusterIP: ''
-    ## @param controller.service.loadBalancerIP Argo CD application controller service Load Balancer IP
-    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
-    ##
-    loadBalancerIP: ''
-    ## @param controller.service.loadBalancerSourceRanges Argo CD application controller service Load Balancer sources
-    ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
-    ## e.g:
-    ## loadBalancerSourceRanges:
-    ##   - 10.10.10.0/24
-    ##
-    loadBalancerSourceRanges: []
-    ## @param controller.service.externalTrafficPolicy Argo CD application controller service external traffic policy
-    ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
-    ##
-    externalTrafficPolicy: Cluster
-    ## @param controller.service.annotations Additional custom annotations for Argo CD application controller service
-    ##
-    annotations: {}
-    ## @param controller.service.extraPorts Extra ports to expose (normally used with the `sidecar` value)
-    ##
-    extraPorts: []
-    ## @param controller.service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
-    ## If "ClientIP", consecutive client requests will be directed to the same Pod
-    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
-    ##
-    sessionAffinity: None
-    ## @param controller.service.sessionAffinityConfig Additional settings for the sessionAffinity
-    ## sessionAffinityConfig:
-    ##   clientIP:
-    ##     timeoutSeconds: 300
-    sessionAffinityConfig: {}
+
 ## @section web - Web management interface parameters
 web:
   ## web image version
@@ -1604,14 +1357,6 @@ web:
   ## Ref: https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
   ##
   tolerations: []
-
-  ## @param extraContainerPorts Optionally specify extra list of additional ports for docker-mailserver container(s)
-  ## e.g:
-  ## extraContainerPorts:
-  ##   - name: myservice
-  ##     containerPort: 9090
-  ##
-  extraContainerPorts: []
   ## @param sessionAffinity Control where client requests go, to the same pod or round-robin. Values: ClientIP or None
   ## ref: https://kubernetes.io/docs/concepts/services-networking/service/
   ##
@@ -1749,54 +1494,57 @@ web:
   ## @section Traffic Exposure Parameters
   ##
   service:
-    ## @param controller.service.type Argo CD service type
+    ## @param service.type Kubernetes Service type
     ##
     type: ClusterIP
-    ## @param controller.service.ports.metrics Argo CD application controller service port
+    ## @param service.ports.http Service HTTP port
+    ## @param service.ports.https Service HTTPS port
     ##
     ports:
       http: 80
-    ## Node ports to expose
-    ## @param controller.service.nodePorts.metrics Node port for Argo CD application controller service
-    ## NOTE: choose port between <30000-32767>
+    ## @param service.loadBalancerSourceRanges Restricts access for LoadBalancer (only with `service.type: LoadBalancer`)
+    ## e.g:
+    ## loadBalancerSourceRanges:
+    ##   - 0.0.0.0/0
+    ##
+    loadBalancerSourceRanges: []
+    ## @param service.loadBalancerIP loadBalancerIP for the docker-mailserver Service (optional, cloud specific)
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
+    loadBalancerIP: ''
+    ## @param service.nodePorts [object] Kubernetes node port
+    ## nodePorts:
+    ##   http: <to set explicitly, choose port between 30000-32767>
+    ##   https: <to set explicitly, choose port between 30000-32767>
     ##
     nodePorts:
-      http: ''
-    ## @param controller.service.clusterIP Argo CD application controller service Cluster IP
+      smtp: ''
+      submission: ''
+      submissionssl: ''
+    ## @param service.externalTrafficPolicy Enable client source IP preservation
+    ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+    ##
+    externalTrafficPolicy: Cluster
+    ## @param service.clusterIP %%MAIN_CONTAINER_NAME%% service Cluster IP
     ## e.g.:
     ## clusterIP: None
     ##
     clusterIP: ''
-    ## @param controller.service.loadBalancerIP Argo CD application controller service Load Balancer IP
-    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
-    ##
-    loadBalancerIP: ''
-    ## @param controller.service.loadBalancerSourceRanges Argo CD application controller service Load Balancer sources
-    ## ref: https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/#restrict-access-for-loadbalancer-service
-    ## e.g:
-    ## loadBalancerSourceRanges:
-    ##   - 10.10.10.0/24
-    ##
-    loadBalancerSourceRanges: []
-    ## @param controller.service.externalTrafficPolicy Argo CD application controller service external traffic policy
-    ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
-    ##
-    externalTrafficPolicy: Cluster
-    ## @param controller.service.annotations Additional custom annotations for Argo CD application controller service
-    ##
-    annotations: {}
-    ## @param controller.service.extraPorts Extra ports to expose (normally used with the `sidecar` value)
+    ## @param service.extraPorts Extra ports to expose (normally used with the `sidecar` value)
     ##
     extraPorts: []
-    ## @param controller.service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
+    ## @param service.annotations Additional custom annotations for %%MAIN_CONTAINER_NAME%% service
+    ##
+    annotations: {}
+    ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
     ## If "ClientIP", consecutive client requests will be directed to the same Pod
     ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
     ##
     sessionAffinity: None
-    ## @param controller.service.sessionAffinityConfig Additional settings for the sessionAffinity
+    ## @param service.sessionAffinityConfig Additional settings for the sessionAffinity
     ## sessionAffinityConfig:
     ##   clientIP:
     ##     timeoutSeconds: 300
+    ##
     sessionAffinityConfig: {}
 ## MariaDB chart configuration
 ## https://github.com/bitnami/charts/blob/main/bitnami/mariadb/values.yaml
@@ -2100,7 +1848,7 @@ mariadb:
 ## @param externalDatabase.user Existing username in the external db
 ## @param externalDatabase.password Password for the above username. Ignored if existing secret is provided
 ## @param externalDatabase.database Name of the existing database
-## @param externalDatabase.existingSecret Name of a secret with the database password. (externalDatabase.password will be ignored and picked up from this secret). The secret has to contain the key db-password
+## @param externalDatabase.existingSecret Name of a secret with the database password. (externalDatabase.password will be ignored and picked up from this secret). The secret has to contain the key mariadb-password
 ##
 externalDatabase:
   host: ''
@@ -2124,7 +1872,7 @@ redis:
   image:
     registry: docker.io
     repository: bitnami/redis
-    tag: 7.4.2-debian-12-r1
+    tag: 7.4.2-debian-12-r5
     digest: ''
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images

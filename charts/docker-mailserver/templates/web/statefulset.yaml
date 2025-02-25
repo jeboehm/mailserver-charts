@@ -15,6 +15,7 @@ spec:
   {{- if .Values.web.updateStrategy }}
   updateStrategy: {{- toYaml .Values.web.updateStrategy | nindent 4 }}
   {{- end }}
+  serviceName: {{ include "docker-mailserver.web" . }}-headless
   {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.web.podLabels .Values.commonLabels ) "context" . ) }}
   selector:
     matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 6 }}
@@ -73,6 +74,10 @@ spec:
             - |
               cp -r /etc/nginx/* /target-nginx/
               cp -r /var/www/html/autoconfig/* /target-autoconfig/
+          env:
+            {{- if .Values.web.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: autoconfig
               mountPath: /target-autoconfig
@@ -112,6 +117,9 @@ spec:
                   key: {{ .Values.externalRedis.existingSecretPasswordKey }}
               {{- end }}
             {{- end }}
+            {{- if .Values.web.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: autoconfig
               mountPath: /var/www/html/autoconfig
@@ -150,6 +158,9 @@ spec:
                   name: {{ .Values.externalRedis.existingSecret }}
                   key: {{ .Values.externalRedis.existingSecretPasswordKey }}
               {{- end }}
+            {{- end }}
+            {{- if .Values.web.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
           volumeMounts:
             - name: manager-tmp
@@ -207,6 +218,9 @@ spec:
                   name: {{ .Values.externalRedis.existingSecret }}
                   key: {{ .Values.externalRedis.existingSecretPasswordKey }}
               {{- end }}
+            {{- end }}
+            {{- if .Values.web.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
           volumeMounts:
             - name: manager-tmp
@@ -292,6 +306,8 @@ spec:
               readOnly: true
             - name: manager-tmp
               mountPath: /opt/manager/var/cache/prod
+            - name: manager-tmp
+              mountPath: /tmp
             - name: manager-log
               mountPath: /opt/manager/var/log
             - name: webmail-tmp

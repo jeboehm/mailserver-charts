@@ -15,6 +15,7 @@ spec:
   {{- if .Values.filter.updateStrategy }}
   updateStrategy: {{- toYaml .Values.filter.updateStrategy | nindent 4 }}
   {{- end }}
+  serviceName: {{ include "docker-mailserver.filter" . }}-headless
   {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.filter.podLabels .Values.commonLabels ) "context" . ) }}
   selector:
     matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 6 }}
@@ -60,6 +61,10 @@ spec:
       {{- if .Values.filter.podSecurityContext.enabled }}
       securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.filter.podSecurityContext "context" $) | nindent 8 }}
       {{- end }}
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
       initContainers:
         - name: copy-config-to-volume
           image: {{ include "docker-mailserver.filter.image" . }}
@@ -72,6 +77,10 @@ spec:
             - -ec
             - |
               cp -r /etc/rspamd/* /target/
+          env:
+            {{- if .Values.filter.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.filter.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: rspamd-config
               mountPath: /target
@@ -103,6 +112,9 @@ spec:
                   name: {{ .Values.externalRedis.existingSecret }}
                   key: {{ .Values.externalRedis.existingSecretPasswordKey }}
               {{- end }}
+            {{- end }}
+            {{- if .Values.filter.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.filter.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
           volumeMounts:
             - name: rspamd-config

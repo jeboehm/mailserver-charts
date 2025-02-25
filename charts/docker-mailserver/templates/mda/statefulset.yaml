@@ -15,6 +15,7 @@ spec:
   {{- if .Values.mda.updateStrategy }}
   updateStrategy: {{- toYaml .Values.mda.updateStrategy | nindent 4 }}
   {{- end }}
+  serviceName: {{ include "docker-mailserver.mda" . }}-headless
   {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.mda.podLabels .Values.commonLabels ) "context" . ) }}
   selector:
     matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 6 }}
@@ -70,6 +71,10 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - cp -r /etc/dovecot/* /target/
+          env:
+            {{- if .Values.mda.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.mda.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: dovecot-config
               mountPath: /target
@@ -80,14 +85,27 @@ spec:
           {{- if .Values.mda.containerSecurityContext.enabled }}
           securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.mda.containerSecurityContext "context" $) | nindent 12 }}
           {{- end }}
-          command:
-            - /usr/local/bin/dh.sh
+          command: ["/bin/sh"]
+          args:
+            - -ec
+            - |
+              if ! [ -r /var/vmail/dh.pem ]; then
+                openssl dhparam -out /var/vmail/dh.pem 4096;
+              fi
+              cp /var/vmail/dh.pem /etc/dovecot/dh.pem
+              touch /etc/dovecot/dh.pem.created
+          env:
+            {{- if .Values.mda.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.mda.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-configenv" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
           volumeMounts:
             - name: dovecot-config
               mountPath: /etc/dovecot
+            - name: vmail
+              mountPath: /var/vmail
         {{- end }}
         - name: prepare-config
           image: {{ include "docker-mailserver.mda.image" . }}
@@ -106,6 +124,9 @@ spec:
                 secretKeyRef:
                   name: {{ include "docker-mailserver.databaseSecretName" . }}
                   key: mariadb-password
+            {{- if .Values.mda.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.mda.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: dovecot-config
               mountPath: /etc/dovecot
@@ -118,6 +139,10 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - chown -R 5000:5000 /var/vmail
+          env:
+            {{- if .Values.mda.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.mda.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: vmail
               mountPath: /var/vmail
