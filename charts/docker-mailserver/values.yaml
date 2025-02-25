@@ -1491,7 +1491,61 @@ web:
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   ##
   podLabels: {}
-
+  ## @section Traffic Exposure Parameters
+  ##
+  service:
+    ## @param service.type Kubernetes Service type
+    ##
+    type: ClusterIP
+    ## @param service.ports.http Service HTTP port
+    ## @param service.ports.https Service HTTPS port
+    ##
+    ports:
+      http: 80
+    ## @param service.loadBalancerSourceRanges Restricts access for LoadBalancer (only with `service.type: LoadBalancer`)
+    ## e.g:
+    ## loadBalancerSourceRanges:
+    ##   - 0.0.0.0/0
+    ##
+    loadBalancerSourceRanges: []
+    ## @param service.loadBalancerIP loadBalancerIP for the docker-mailserver Service (optional, cloud specific)
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#type-loadbalancer
+    loadBalancerIP: ''
+    ## @param service.nodePorts [object] Kubernetes node port
+    ## nodePorts:
+    ##   http: <to set explicitly, choose port between 30000-32767>
+    ##   https: <to set explicitly, choose port between 30000-32767>
+    ##
+    nodePorts:
+      smtp: ''
+      submission: ''
+      submissionssl: ''
+    ## @param service.externalTrafficPolicy Enable client source IP preservation
+    ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+    ##
+    externalTrafficPolicy: Cluster
+    ## @param service.clusterIP %%MAIN_CONTAINER_NAME%% service Cluster IP
+    ## e.g.:
+    ## clusterIP: None
+    ##
+    clusterIP: ''
+    ## @param service.extraPorts Extra ports to expose (normally used with the `sidecar` value)
+    ##
+    extraPorts: []
+    ## @param service.annotations Additional custom annotations for %%MAIN_CONTAINER_NAME%% service
+    ##
+    annotations: {}
+    ## @param service.sessionAffinity Session Affinity for Kubernetes service, can be "None" or "ClientIP"
+    ## If "ClientIP", consecutive client requests will be directed to the same Pod
+    ## ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
+    ##
+    sessionAffinity: None
+    ## @param service.sessionAffinityConfig Additional settings for the sessionAffinity
+    ## sessionAffinityConfig:
+    ##   clientIP:
+    ##     timeoutSeconds: 300
+    ##
+    sessionAffinityConfig: {}
 ## MariaDB chart configuration
 ## https://github.com/bitnami/charts/blob/main/bitnami/mariadb/values.yaml
 ##
