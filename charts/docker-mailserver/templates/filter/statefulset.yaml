@@ -61,6 +61,10 @@ spec:
       {{- if .Values.filter.podSecurityContext.enabled }}
       securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.filter.podSecurityContext "context" $) | nindent 8 }}
       {{- end }}
+      dnsConfig:
+        options:
+          - name: ndots
+            value: "1"
       initContainers:
         - name: copy-config-to-volume
           image: {{ include "docker-mailserver.filter.image" . }}
