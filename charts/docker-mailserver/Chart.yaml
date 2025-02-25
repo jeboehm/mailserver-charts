@@ -37,5 +37,5 @@ maintainers:
   - name: jeboehm
 name: docker-mailserver
 sources: [https://github.com/jeboehm/docker-mailserver]
-version: 0.0.1
+version: 0.0.2
 appVersion: 0.0.1
