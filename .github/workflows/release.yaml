@@ -23,6 +23,23 @@ jobs:
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
+      - name: Update helm chart
+        uses: shini4i/helm-charts-updater@v1
+        with:
+          github_token: "${{ secrets.GITHUB_TOKEN }}"
+          gh_user: jeboehm
+          gh_repo: mailserver-charts
+          chart_name: docker-mailserver
+          app_version: next
+
+          # Optional. Whether the README should be updated with the table of existing charts.
+          # Defaults to false
+          # NOTE: It is required to have the following comments in the README.md file:
+          # <!-- table_start -->
+          # <!-- table_end -->
+          # The table would be generated between those two comments.
+          update_readme: true
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.7.0
         env:
