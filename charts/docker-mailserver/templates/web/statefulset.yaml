@@ -73,6 +73,10 @@ spec:
             - |
               cp -r /etc/nginx/* /target-nginx/
               cp -r /var/www/html/autoconfig/* /target-autoconfig/
+          env:
+            {{- if .Values.web.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: autoconfig
               mountPath: /target-autoconfig
@@ -112,6 +116,9 @@ spec:
                   key: {{ .Values.externalRedis.existingSecretPasswordKey }}
               {{- end }}
             {{- end }}
+            {{- if .Values.web.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: autoconfig
               mountPath: /var/www/html/autoconfig
@@ -150,6 +157,9 @@ spec:
                   name: {{ .Values.externalRedis.existingSecret }}
                   key: {{ .Values.externalRedis.existingSecretPasswordKey }}
               {{- end }}
+            {{- end }}
+            {{- if .Values.web.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
           volumeMounts:
             - name: manager-tmp
@@ -207,6 +217,9 @@ spec:
                   name: {{ .Values.externalRedis.existingSecret }}
                   key: {{ .Values.externalRedis.existingSecretPasswordKey }}
               {{- end }}
+            {{- end }}
+            {{- if .Values.web.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
           volumeMounts:
             - name: manager-tmp
@@ -292,6 +305,8 @@ spec:
               readOnly: true
             - name: manager-tmp
               mountPath: /opt/manager/var/cache/prod
+            - name: manager-tmp
+              mountPath: /tmp
             - name: manager-log
               mountPath: /opt/manager/var/log
             - name: webmail-tmp

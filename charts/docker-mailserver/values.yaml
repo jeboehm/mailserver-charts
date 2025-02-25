@@ -2100,7 +2100,7 @@ mariadb:
 ## @param externalDatabase.user Existing username in the external db
 ## @param externalDatabase.password Password for the above username. Ignored if existing secret is provided
 ## @param externalDatabase.database Name of the existing database
-## @param externalDatabase.existingSecret Name of a secret with the database password. (externalDatabase.password will be ignored and picked up from this secret). The secret has to contain the key db-password
+## @param externalDatabase.existingSecret Name of a secret with the database password. (externalDatabase.password will be ignored and picked up from this secret). The secret has to contain the key mariadb-password
 ##
 externalDatabase:
   host: ''

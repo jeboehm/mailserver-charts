@@ -72,6 +72,10 @@ spec:
             - -ec
             - |
               cp -r /etc/rspamd/* /target/
+          env:
+            {{- if .Values.filter.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.filter.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: rspamd-config
               mountPath: /target
@@ -103,6 +107,9 @@ spec:
                   name: {{ .Values.externalRedis.existingSecret }}
                   key: {{ .Values.externalRedis.existingSecretPasswordKey }}
               {{- end }}
+            {{- end }}
+            {{- if .Values.filter.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.filter.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
           volumeMounts:
             - name: rspamd-config

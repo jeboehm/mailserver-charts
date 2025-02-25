@@ -73,6 +73,10 @@ spec:
             - |
               cp -r /etc/postfix/* /target/
               chown -R root:root /target/
+          env:
+            {{- if .Values.mta.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.mta.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: postfix
               mountPath: /target
@@ -93,6 +97,9 @@ spec:
                 secretKeyRef:
                   name: {{ include "docker-mailserver.databaseSecretName" . }}
                   key: mariadb-password
+            {{- if .Values.mta.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.mta.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           volumeMounts:
             - name: postfix
               mountPath: /etc/postfix

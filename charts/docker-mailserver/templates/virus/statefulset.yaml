@@ -69,6 +69,10 @@ spec:
           {{- end }}
           command:
             - /usr/bin/freshclam
+          env:
+            {{- if .Values.virus.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.virus.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ printf "%s-configenv" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
