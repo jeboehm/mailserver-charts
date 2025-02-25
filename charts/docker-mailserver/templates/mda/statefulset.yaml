@@ -84,8 +84,15 @@ spec:
           {{- if .Values.mda.containerSecurityContext.enabled }}
           securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.mda.containerSecurityContext "context" $) | nindent 12 }}
           {{- end }}
-          command:
-            - /usr/local/bin/dh.sh
+          command: ["/bin/sh"]
+          args:
+            - -ec
+            - |
+              if ! [ -r /var/vmail/dh.pem ]; then
+                openssl dhparam -out /var/vmail/dh.pem 4096;
+              fi
+              cp /var/vmail/dh.pem /etc/dovecot/dh.pem
+              touch /etc/dovecot/dh.pem.created
           env:
             {{- if .Values.mda.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.mda.extraEnvVars "context" $) | nindent 12 }}
@@ -96,6 +103,8 @@ spec:
           volumeMounts:
             - name: dovecot-config
               mountPath: /etc/dovecot
+            - name: vmail
+              mountPath: /var/vmail
         {{- end }}
         - name: prepare-config
           image: {{ include "docker-mailserver.mda.image" . }}

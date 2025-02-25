@@ -103,6 +103,27 @@ spec:
           volumeMounts:
             - name: postfix
               mountPath: /etc/postfix
+        - name: chown-postfix
+          image: {{ include "docker-mailserver.mta.image" . }}
+          imagePullPolicy: {{ .Values.mta.image.pullPolicy }}
+          {{- if .Values.mta.containerSecurityContext.enabled }}
+          securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.mta.containerSecurityContext "context" $) | nindent 12 }}
+          {{- end }}
+          command: ["/bin/sh"]
+          args:
+            - -ec
+            - |
+              chown -R postfix /var/lib/postfix
+              chmod 700 /var/lib/postfix
+          env:
+            {{- if .Values.mta.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.mta.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
+          volumeMounts:
+            - name: postfix
+              mountPath: /etc/postfix
+            - name: tmp
+              mountPath: /var/lib/postfix
         {{- if .Values.mta.initContainers }}
           {{- include "common.tplvalues.render" (dict "value" .Values.mta.initContainers "context" $) | nindent 8 }}
         {{- end }}
