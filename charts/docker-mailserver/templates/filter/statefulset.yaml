@@ -84,6 +84,9 @@ spec:
           volumeMounts:
             - name: rspamd-config
               mountPath: /target
+            - name: unbound-config
+              mountPath: /etc/rspamd/local.d/options.inc
+              subPath: options.inc
         - name: prepare-config
           image: {{ include "docker-mailserver.filter.image" . }}
           imagePullPolicy: {{ .Values.filter.image.pullPolicy }}
@@ -180,9 +183,6 @@ spec:
               mountPath: /tmp
             - name: rspamd-lib
               mountPath: /var/lib/rspamd
-            - name: unbound-config
-              mountPath: /etc/rspamd/override.d/options.inc
-              subPath: options.inc
           {{- if .Values.filter.extraVolumeMounts }}
           {{- include "common.tplvalues.render" (dict "value" .Values.filter.extraVolumeMounts "context" $) | nindent 12 }}
           {{- end }}
