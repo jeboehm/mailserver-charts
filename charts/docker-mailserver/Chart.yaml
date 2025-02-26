@@ -12,7 +12,7 @@ keywords:
 - mailserver
 - smtp
 - imap
-appVersion: feat/helm-updater
+appVersion: next
 maintainers:
 - name: jeboehm
 dependencies:

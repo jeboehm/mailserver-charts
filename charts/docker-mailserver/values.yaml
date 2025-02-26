@@ -1057,6 +1057,15 @@ filter:
     ##
     pullSecrets: []
 
+  unbound:
+    image:
+      registry: docker.io
+      repository: mvance/unbound
+      tag: 1.22.0
+      digest: ''
+      pullPolicy: IfNotPresent
+      pullSecrets: []
+
   ## @param replicaCount Number of mda to run (requires ReadWriteMany PVC support)
   replicaCount: 1
 
