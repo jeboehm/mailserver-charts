@@ -1,7 +1,7 @@
 ---
 
 apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
-kind: StatefulSet
+kind: {{ .Values.mta.kind }}
 metadata:
   name: {{ include "docker-mailserver.mta" . }}
   namespace: {{ include "common.names.namespace" . | quote }}
@@ -11,11 +11,15 @@ metadata:
   annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
   {{- end }}
 spec:
+  {{- if eq .Values.mta.kind "StatefulSet" }}
   replicas: {{ .Values.mta.replicaCount }}
+  {{- end }}
   {{- if .Values.mta.updateStrategy }}
   updateStrategy: {{- toYaml .Values.mta.updateStrategy | nindent 4 }}
   {{- end }}
+  {{- if eq .Values.mta.kind "StatefulSet" }}
   serviceName: {{ include "docker-mailserver.mta" . }}-headless
+  {{- end }}
   {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.mta.podLabels .Values.commonLabels ) "context" . ) }}
   selector:
     matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 6 }}

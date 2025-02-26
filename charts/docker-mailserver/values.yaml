@@ -212,6 +212,9 @@ persistence:
     annotations: {}
 ## @section mta - Mail Transfer Agent parameters
 mta:
+  ## @param kind StatefulSet or DaemonSet
+  ##
+  kind: StatefulSet
   ## mda image version
   ## ref: https://hub.docker.com/r/jeboehm/mailserver-mta/tags/
   ## @param image.registry [default: REGISTRY_NAME] docker-mailserver image registry
@@ -477,7 +480,7 @@ mta:
     ## @param service.externalTrafficPolicy Enable client source IP preservation
     ## ref https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
     ##
-    externalTrafficPolicy: Cluster
+    externalTrafficPolicy: Local
     ## @param service.clusterIP %%MAIN_CONTAINER_NAME%% service Cluster IP
     ## e.g.:
     ## clusterIP: None
@@ -1056,6 +1059,15 @@ filter:
     ##   - myRegistryKeySecretName
     ##
     pullSecrets: []
+
+  unbound:
+    image:
+      registry: docker.io
+      repository: mvance/unbound
+      tag: 1.22.0
+      digest: ''
+      pullPolicy: IfNotPresent
+      pullSecrets: []
 
   ## @param replicaCount Number of mda to run (requires ReadWriteMany PVC support)
   replicaCount: 1
