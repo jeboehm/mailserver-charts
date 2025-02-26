@@ -1,6 +1,6 @@
 # docker-mailserver
 
-![Version: 0.0.3](https://img.shields.io/badge/Version-0.0.3-informational?style=flat-square) ![AppVersion: feat/helm-updater](https://img.shields.io/badge/AppVersion-feat/helm--updater-informational?style=flat-square)
+![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![AppVersion: v4.0.0](https://img.shields.io/badge/AppVersion-v4.0.0-informational?style=flat-square)
 
 Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible.
 
@@ -104,6 +104,12 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | filter.sidecars | list | `[]` |  |
 | filter.tolerations | list | `[]` |  |
 | filter.topologySpreadConstraints | list | `[]` |  |
+| filter.unbound.image.digest | string | `""` |  |
+| filter.unbound.image.pullPolicy | string | `"IfNotPresent"` |  |
+| filter.unbound.image.pullSecrets | list | `[]` |  |
+| filter.unbound.image.registry | string | `"docker.io"` |  |
+| filter.unbound.image.repository | string | `"mvance/unbound"` |  |
+| filter.unbound.image.tag | string | `"1.22.0"` |  |
 | filter.updateStrategy.type | string | `"RollingUpdate"` |  |
 | fullnameOverride | string | `""` |  |
 | global.compatibility.openshift.adaptSecurityContext | string | `"auto"` |  |
@@ -239,6 +245,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | mta.image.repository | string | `"jeboehm/mailserver-mta"` |  |
 | mta.image.tag | string | `"next"` |  |
 | mta.initContainers | list | `[]` |  |
+| mta.kind | string | `"StatefulSet"` |  |
 | mta.lifecycleHooks | object | `{}` |  |
 | mta.livenessProbe.enabled | bool | `true` |  |
 | mta.livenessProbe.failureThreshold | int | `5` |  |
@@ -268,7 +275,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | mta.service.annotations | object | `{}` |  |
 | mta.service.clusterIP | string | `""` |  |
 | mta.service.enabled | bool | `false` |  |
-| mta.service.externalTrafficPolicy | string | `"Cluster"` |  |
+| mta.service.externalTrafficPolicy | string | `"Local"` |  |
 | mta.service.extraPorts | list | `[]` |  |
 | mta.service.loadBalancerIP | string | `""` |  |
 | mta.service.loadBalancerSourceRanges | list | `[]` |  |
