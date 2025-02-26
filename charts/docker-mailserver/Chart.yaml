@@ -12,7 +12,7 @@ keywords:
 - mailserver
 - smtp
 - imap
-appVersion: next
+appVersion: 0.0.3
 maintainers:
 - name: jeboehm
 dependencies:

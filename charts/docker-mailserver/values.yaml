@@ -212,6 +212,9 @@ persistence:
     annotations: {}
 ## @section mta - Mail Transfer Agent parameters
 mta:
+  ## @param kind StatefulSet or DaemonSet
+  ##
+  kind: StatefulSet
   ## mda image version
   ## ref: https://hub.docker.com/r/jeboehm/mailserver-mta/tags/
   ## @param image.registry [default: REGISTRY_NAME] docker-mailserver image registry
