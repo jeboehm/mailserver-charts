@@ -5,15 +5,14 @@ kind: ConfigMap
 metadata:
     name: {{ printf "%s-unbound" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
     namespace: {{ include "common.names.namespace" . | quote }}
-    labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
+    labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 6 }}
     {{- if .Values.commonAnnotations }}
-    annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+    annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 6 }}
     {{- end }}
 data:
     options.inc: |
-        local_addrs = ["127.0.0.1/8"]
         dns {
-            nameserver = ["127.0.0.1"];
+            nameserver = "master-slave:127.0.0.1,8.8.8.8";
         }
 
     unbound.conf: |
