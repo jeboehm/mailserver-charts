@@ -1,24 +1,24 @@
 ---
 
-{{- if .Values.filter.pdb.create }}
+{{- if .Values.virus.pdb.create }}
 apiVersion: {{ include "common.capabilities.policy.apiVersion" . }}
 kind: PodDisruptionBudget
 metadata:
-  name: {{ include "docker-mailserver.filter" . }}
+  name: {{ include "docker-mailserver.virus" . }}
   namespace: {{ include "common.names.namespace" . | quote }}
   labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
-    app.kubernetes.io/component: filter
+    app.kubernetes.io/component: virus
   {{- if .Values.commonAnnotations }}
   annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
   {{- end }}
 spec:
-  {{- if .Values.filter.pdb.minAvailable }}
-  minAvailable: {{ .Values.filter.pdb.minAvailable }}
+  {{- if .Values.virus.pdb.minAvailable }}
+  minAvailable: {{ .Values.virus.pdb.minAvailable }}
   {{- end }}
-  {{- if or .Values.filter.pdb.maxUnavailable ( not .Values.filter.pdb.minAvailable ) }}
-  maxUnavailable: {{ .Values.filter.pdb.maxUnavailable | default 1 }}
+  {{- if or .Values.virus.pdb.maxUnavailable ( not .Values.virus.pdb.minAvailable ) }}
+  maxUnavailable: {{ .Values.virus.pdb.maxUnavailable | default 1 }}
   {{- end }}
-  {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.filter.podLabels .Values.commonLabels ) "context" . ) }}
+  {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.virus.podLabels .Values.commonLabels ) "context" . ) }}
   selector: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 4 }}
-    app.kubernetes.io/component: filter
+    app.kubernetes.io/component: virus
 {{- end }}
