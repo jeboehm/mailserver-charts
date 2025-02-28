@@ -228,8 +228,6 @@ mta:
   image:
     registry: docker.io
     repository: jeboehm/mailserver-mta
-    tag: next
-    digest: ''
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
     ##
@@ -520,8 +518,6 @@ mda:
   image:
     registry: docker.io
     repository: jeboehm/mailserver-mda
-    tag: next
-    digest: ''
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
     ##
@@ -813,8 +809,6 @@ virus:
   image:
     registry: docker.io
     repository: jeboehm/mailserver-virus
-    tag: next
-    digest: ''
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
     ##
@@ -1051,8 +1045,6 @@ filter:
   image:
     registry: docker.io
     repository: jeboehm/mailserver-filter
-    tag: next
-    digest: ''
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
     ##
@@ -1296,8 +1288,6 @@ web:
   image:
     registry: docker.io
     repository: jeboehm/mailserver-web
-    tag: next
-    digest: ''
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
     ##
