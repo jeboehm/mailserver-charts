@@ -1,0 +1,24 @@
+---
+
+{{- if and .Values.mta.pdb.create (eq .Values.mta.kind "StatefulSet") }}
+apiVersion: {{ include "common.capabilities.policy.apiVersion" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "docker-mailserver.mta" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
+    app.kubernetes.io/component: mta
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.mta.pdb.minAvailable }}
+  minAvailable: {{ .Values.mta.pdb.minAvailable }}
+  {{- end }}
+  {{- if or .Values.mta.pdb.maxUnavailable ( not .Values.mta.pdb.minAvailable ) }}
+  maxUnavailable: {{ .Values.mta.pdb.maxUnavailable | default 1 }}
+  {{- end }}
+  {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.mta.podLabels .Values.commonLabels ) "context" . ) }}
+  selector: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 4 }}
+    app.kubernetes.io/component: mta
+{{- end }}
