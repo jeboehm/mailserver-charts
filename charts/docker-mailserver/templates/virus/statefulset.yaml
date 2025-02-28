@@ -122,8 +122,12 @@ spec:
           livenessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.virus.customLivenessProbe "context" $) | nindent 12 }}
           {{- else if .Values.virus.livenessProbe.enabled }}
           livenessProbe:
-            tcpSocket:
-              port: 3310
+            exec:
+              command:
+                - sh
+                - -c
+                - >-
+                  printf 'PING\n' | nc 127.0.0.1 3310 | grep -q PONG
             initialDelaySeconds: {{ .Values.virus.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.virus.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.virus.livenessProbe.timeoutSeconds }}
