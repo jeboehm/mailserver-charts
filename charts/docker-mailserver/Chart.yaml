@@ -4,7 +4,7 @@ description: Docker Mailserver based on the famous ISPMail guide. All images are
   on Alpine Linux and are so small as possible.
 sources:
 - https://github.com/jeboehm/docker-mailserver
-version: 0.0.4
+version: 0.0.5
 keywords:
 - postfix
 - dovecot
@@ -12,23 +12,22 @@ keywords:
 - mailserver
 - smtp
 - imap
+- docker-mailserver
 appVersion: v4.0.0
 maintainers:
 - name: jeboehm
 dependencies:
 - name: redis
-  version: 20.7.0
+  version: 20.10.0
   repository: oci://registry-1.docker.io/bitnamicharts
   condition: redis.enabled
 - name: mariadb
-  version: 20.2.2
+  version: 20.4.1
   repository: oci://registry-1.docker.io/bitnamicharts
   condition: mariadb.enabled
 - name: common
-  version: 2.29.1
+  version: 2.30.0
   repository: oci://registry-1.docker.io/bitnamicharts
-  tags:
-  - bitnami-common
 annotations:
   category: Mail
   licenses: MIT

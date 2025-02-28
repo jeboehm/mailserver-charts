@@ -95,28 +95,7 @@ spec:
             - configMapRef:
                 name: {{ printf "%s-configenv" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
           env:
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "docker-mailserver.databaseSecretName" . }}
-                  key: mariadb-password
-            {{- if and .Values.redis.enabled (include "docker-mailserver.redis.auth.enabled" .) }}
-            - name: REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "docker-mailserver.redis.secretName" . }}
-                  key: {{ include "docker-mailserver.redis.secretPasswordKey" . }}
-            {{- else if .Values.externalRedis.enabled }}
-            - name: REDIS_PASSWORD
-              {{- if not ( eq "" .Values.externalRedis.password ) }}
-              value: {{ .Values.externalRedis.password }}
-              {{- else }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.externalRedis.existingSecret }}
-                  key: {{ .Values.externalRedis.existingSecretPasswordKey }}
-              {{- end }}
-            {{- end }}
+            {{- include "docker-mailserver.databaseEnvs" . | nindent 12 }}
             {{- if .Values.web.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
@@ -125,6 +104,24 @@ spec:
               mountPath: /var/www/html/autoconfig
             - name: nginx
               mountPath: /etc/nginx
+        - name: wait-for
+          image: {{ include "docker-mailserver.web.image" . }}
+          imagePullPolicy: {{ .Values.web.image.pullPolicy }}
+          {{- if .Values.web.containerSecurityContext.enabled }}
+          securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.web.containerSecurityContext "context" $) | nindent 12 }}
+          {{- end }}
+          command:
+            - /usr/local/bin/dockerize
+          args:
+            - --wait
+            - tcp://{{ include "docker-mailserver.databaseHost" . }}:{{ include "docker-mailserver.databasePort" . }}
+            - --wait
+            - tcp://{{ include "docker-mailserver.redisHost" . }}:{{ include "docker-mailserver.redisPort" . }}
+            - /bin/true
+          env:
+            {{- if .Values.web.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
         - name: init-database
           image: {{ include "docker-mailserver.web.image" . }}
           imagePullPolicy: {{ .Values.web.image.pullPolicy }}
@@ -137,28 +134,7 @@ spec:
             - configMapRef:
                 name: {{ printf "%s-configenv" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
           env:
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "docker-mailserver.databaseSecretName" . }}
-                  key: mariadb-password
-            {{- if and .Values.redis.enabled (include "docker-mailserver.redis.auth.enabled" .) }}
-            - name: REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "docker-mailserver.redis.secretName" . }}
-                  key: {{ include "docker-mailserver.redis.secretPasswordKey" . }}
-            {{- else if .Values.externalRedis.enabled }}
-            - name: REDIS_PASSWORD
-              {{- if not ( eq "" .Values.externalRedis.password ) }}
-              value: {{ .Values.externalRedis.password }}
-              {{- else }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.externalRedis.existingSecret }}
-                  key: {{ .Values.externalRedis.existingSecretPasswordKey }}
-              {{- end }}
-            {{- end }}
+            {{- include "docker-mailserver.databaseEnvs" . | nindent 12 }}
             {{- if .Values.web.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
@@ -197,28 +173,7 @@ spec:
                 secretKeyRef:
                   name: {{ printf "%s-admin" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
                   key: admin-password
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "docker-mailserver.databaseSecretName" . }}
-                  key: mariadb-password
-            {{- if and .Values.redis.enabled (include "docker-mailserver.redis.auth.enabled" .) }}
-            - name: REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "docker-mailserver.redis.secretName" . }}
-                  key: {{ include "docker-mailserver.redis.secretPasswordKey" . }}
-            {{- else if .Values.externalRedis.enabled }}
-            - name: REDIS_PASSWORD
-              {{- if not ( eq "" .Values.externalRedis.password ) }}
-              value: {{ .Values.externalRedis.password }}
-              {{- else }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.externalRedis.existingSecret }}
-                  key: {{ .Values.externalRedis.existingSecretPasswordKey }}
-              {{- end }}
-            {{- end }}
+            {{- include "docker-mailserver.databaseEnvs" . | nindent 12 }}
             {{- if .Values.web.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
@@ -247,28 +202,7 @@ spec:
               containerPort: 9000
               protocol: TCP
           env:
-            - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "docker-mailserver.databaseSecretName" . }}
-                  key: mariadb-password
-            {{- if and .Values.redis.enabled (include "docker-mailserver.redis.auth.enabled" .) }}
-            - name: REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "docker-mailserver.redis.secretName" . }}
-                  key: {{ include "docker-mailserver.redis.secretPasswordKey" . }}
-            {{- else if .Values.externalRedis.enabled }}
-            - name: REDIS_PASSWORD
-              {{- if not ( eq "" .Values.externalRedis.password ) }}
-              value: {{ .Values.externalRedis.password }}
-              {{- else }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.externalRedis.existingSecret }}
-                  key: {{ .Values.externalRedis.existingSecretPasswordKey }}
-              {{- end }}
-            {{- end }}
+            {{- include "docker-mailserver.databaseEnvs" . | nindent 12 }}
             {{- if .Values.web.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.web.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
@@ -360,7 +294,7 @@ spec:
           {{- else if .Values.web.livenessProbe.enabled }}
           livenessProbe:
             httpGet:
-              path: /manager
+              path: /login
               port: 80
             initialDelaySeconds: {{ .Values.web.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.web.livenessProbe.periodSeconds }}

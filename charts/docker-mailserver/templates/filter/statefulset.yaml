@@ -99,29 +99,33 @@ spec:
             - configMapRef:
                 name: {{ printf "%s-configenv" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
           env:
-            {{- if and .Values.redis.enabled (include "docker-mailserver.redis.auth.enabled" .) }}
-            - name: REDIS_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "docker-mailserver.redis.secretName" . }}
-                  key: {{ include "docker-mailserver.redis.secretPasswordKey" . }}
-            {{- else if .Values.externalRedis.enabled }}
-            - name: REDIS_PASSWORD
-              {{- if not ( eq "" .Values.externalRedis.password ) }}
-              value: {{ .Values.externalRedis.password }}
-              {{- else }}
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.externalRedis.existingSecret }}
-                  key: {{ .Values.externalRedis.existingSecretPasswordKey }}
-              {{- end }}
-            {{- end }}
+            {{- include "docker-mailserver.databaseEnvs" . | nindent 12 }}
             {{- if .Values.filter.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.filter.extraEnvVars "context" $) | nindent 12 }}
             {{- end }}
           volumeMounts:
             - name: rspamd-config
               mountPath: /etc/rspamd
+        - name: wait-for
+          image: {{ include "docker-mailserver.filter.image" . }}
+          imagePullPolicy: {{ .Values.filter.image.pullPolicy }}
+          {{- if .Values.filter.containerSecurityContext.enabled }}
+          securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.filter.containerSecurityContext "context" $) | nindent 12 }}
+          {{- end }}
+          command:
+            - /usr/local/bin/dockerize
+          args:
+            - --wait
+            - tcp://{{ include "docker-mailserver.redisHost" . }}:{{ include "docker-mailserver.redisPort" . }}
+            - --wait
+            - tcp://{{ printf "%s-headless" (include "docker-mailserver.virus" .) }}:3310
+            - /bin/true
+          envFrom:
+            - configMapRef:
+                name: {{ printf "%s-configenv" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
+            {{- if .Values.filter.extraEnvVars }}
+            {{- include "common.tplvalues.render" (dict "value" .Values.filter.extraEnvVars "context" $) | nindent 12 }}
+            {{- end }}
       containers:
         - name: rspamd
           image: {{ include "docker-mailserver.filter.image" . }}
@@ -167,8 +171,9 @@ spec:
           livenessProbe: {{- include "common.tplvalues.render" (dict "value" .Values.filter.customLivenessProbe "context" $) | nindent 12 }}
           {{- else if .Values.filter.livenessProbe.enabled }}
           livenessProbe:
-            tcpSocket:
-              port: 11332
+            httpGet:
+              path: /
+              port: 11334
             initialDelaySeconds: {{ .Values.filter.livenessProbe.initialDelaySeconds }}
             periodSeconds: {{ .Values.filter.livenessProbe.periodSeconds }}
             timeoutSeconds: {{ .Values.filter.livenessProbe.timeoutSeconds }}

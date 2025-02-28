@@ -228,8 +228,6 @@ mta:
   image:
     registry: docker.io
     repository: jeboehm/mailserver-mta
-    tag: next
-    digest: ''
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
     ##
@@ -357,7 +355,7 @@ mta:
   ## @param resourcesPreset Set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if resources is set (resources is recommended for production).
   ## More information: https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15
   ##
-  resourcesPreset: small
+  resourcesPreset: micro
   ## @param resources Set container requests and limits for different resources like CPU or memory (essential for production workloads)
   ## Example:
   ## resources:
@@ -438,7 +436,9 @@ mta:
   ## @param podAnnotations Pod annotations
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
   ##
-  podAnnotations: {}
+  podAnnotations:
+    checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
+    checksum/credentials: '{{ include "docker-mailserver.databaseEnvs" . | sha256sum }}'
   ## @param podLabels Add additional labels to the pod (evaluated as a template)
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   ##
@@ -518,8 +518,6 @@ mda:
   image:
     registry: docker.io
     repository: jeboehm/mailserver-mda
-    tag: next
-    digest: ''
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
     ##
@@ -651,7 +649,7 @@ mda:
   ## @param resourcesPreset Set container resources according to one common preset (allowed values: none, nano, micro, small, medium, large, xlarge, 2xlarge). This is ignored if resources is set (resources is recommended for production).
   ## More information: https://github.com/bitnami/charts/blob/main/bitnami/common/templates/_resources.tpl#L15
   ##
-  resourcesPreset: micro
+  resourcesPreset: small
   ## @param resources Set container requests and limits for different resources like CPU or memory (essential for production workloads)
   ## Example:
   ## resources:
@@ -714,10 +712,10 @@ mda:
   ##
   livenessProbe:
     enabled: true
-    initialDelaySeconds: 10
-    periodSeconds: 10
-    timeoutSeconds: 15
-    failureThreshold: 5
+    initialDelaySeconds: 15
+    periodSeconds: 20
+    timeoutSeconds: 5
+    failureThreshold: 3
     successThreshold: 1
   ## @param customLivenessProbe Override default liveness probe
   ##
@@ -728,7 +726,9 @@ mda:
   ## @param podAnnotations Pod annotations
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
   ##
-  podAnnotations: {}
+  podAnnotations:
+    checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
+    checksum/credentials: '{{ include "docker-mailserver.databaseEnvs" . | sha256sum }}'
   ## @param podLabels Add additional labels to the pod (evaluated as a template)
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   ##
@@ -809,8 +809,6 @@ virus:
   image:
     registry: docker.io
     repository: jeboehm/mailserver-virus
-    tag: next
-    digest: ''
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
     ##
@@ -1024,7 +1022,9 @@ virus:
   ## @param podAnnotations Pod annotations
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
   ##
-  podAnnotations: {}
+  podAnnotations:
+    checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
+    checksum/credentials: '{{ include "docker-mailserver.databaseEnvs" . | sha256sum }}'
   ## @param podLabels Add additional labels to the pod (evaluated as a template)
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   ##
@@ -1045,8 +1045,6 @@ filter:
   image:
     registry: docker.io
     repository: jeboehm/mailserver-filter
-    tag: next
-    digest: ''
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
     ##
@@ -1267,7 +1265,9 @@ filter:
   ## @param podAnnotations Pod annotations
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
   ##
-  podAnnotations: {}
+  podAnnotations:
+    checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
+    checksum/credentials: '{{ include "docker-mailserver.databaseEnvs" . | sha256sum }}'
   ## @param podLabels Add additional labels to the pod (evaluated as a template)
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   ##
@@ -1288,8 +1288,6 @@ web:
   image:
     registry: docker.io
     repository: jeboehm/mailserver-web
-    tag: next
-    digest: ''
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
     ##
@@ -1498,7 +1496,9 @@ web:
   ## @param podAnnotations Pod annotations
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
   ##
-  podAnnotations: {}
+  podAnnotations:
+    checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
+    checksum/credentials: '{{ include "docker-mailserver.databaseEnvs" . | sha256sum }}'
   ## @param podLabels Add additional labels to the pod (evaluated as a template)
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   ##

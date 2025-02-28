@@ -54,10 +54,6 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
   {{- printf "%s-web" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
 {{- end -}}
 
-{{- define "docker-mailserver.dkim" -}}
-  {{- printf "%s-dkim" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
-{{- end -}}
-
 {{- define "docker-mailserver.vmail" -}}
   {{- printf "%s-vmail" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
 {{- end -}}
@@ -67,23 +63,23 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 {{- end -}}
 
 {{- define "docker-mailserver.mda.image" -}}
-{{- include "common.images.image" ( dict "imageRoot" .Values.mda.image "global" .Values.global ) -}}
+{{- include "common.images.image" ( dict "imageRoot" .Values.mda.image "global" .Values.global "chart" .Chart ) -}}
 {{- end -}}
 
 {{- define "docker-mailserver.virus.image" -}}
-{{- include "common.images.image" ( dict "imageRoot" .Values.virus.image "global" .Values.global ) -}}
+{{- include "common.images.image" ( dict "imageRoot" .Values.virus.image "global" .Values.global "chart" .Chart ) -}}
 {{- end -}}
 
 {{- define "docker-mailserver.filter.image" -}}
-{{- include "common.images.image" ( dict "imageRoot" .Values.filter.image "global" .Values.global ) -}}
+{{- include "common.images.image" ( dict "imageRoot" .Values.filter.image "global" .Values.global "chart" .Chart ) -}}
 {{- end -}}
 
 {{- define "docker-mailserver.mta.image" -}}
-{{- include "common.images.image" ( dict "imageRoot" .Values.mta.image "global" .Values.global ) -}}
+{{- include "common.images.image" ( dict "imageRoot" .Values.mta.image "global" .Values.global "chart" .Chart ) -}}
 {{- end -}}
 
 {{- define "docker-mailserver.web.image" -}}
-{{- include "common.images.image" ( dict "imageRoot" .Values.web.image "global" .Values.global ) -}}
+{{- include "common.images.image" ( dict "imageRoot" .Values.web.image "global" .Values.global "chart" .Chart ) -}}
 {{- end -}}
 
 {{/*
@@ -210,4 +206,29 @@ Return the MariaDB Secret Name
 {{- else -}}
     {{- printf "%s-externaldb" (include "common.names.fullname" .) -}}
 {{- end -}}
+{{- end -}}
+
+{{- define "docker-mailserver.databaseEnvs" -}}
+- name: MYSQL_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "docker-mailserver.databaseSecretName" . }}
+      key: mariadb-password
+{{- if and .Values.redis.enabled (include "docker-mailserver.redis.auth.enabled" .) }}
+- name: REDIS_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "docker-mailserver.redis.secretName" . }}
+      key: {{ include "docker-mailserver.redis.secretPasswordKey" . }}
+{{- else if .Values.externalRedis.enabled }}
+- name: REDIS_PASSWORD
+  {{- if not ( eq "" .Values.externalRedis.password ) }}
+  value: {{ .Values.externalRedis.password }}
+  {{- else }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.externalRedis.existingSecret }}
+      key: {{ .Values.externalRedis.existingSecretPasswordKey }}
+  {{- end }}
+{{- end }}
 {{- end -}}
