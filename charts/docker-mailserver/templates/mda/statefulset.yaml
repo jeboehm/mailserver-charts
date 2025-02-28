@@ -119,6 +119,11 @@ spec:
             - configMapRef:
                 name: {{ printf "%s-configenv" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
           env:
+            - name: CONTROLLER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ printf "%s-filter-controller" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
+                  key: controller-password
             {{- include "docker-mailserver.databaseEnvs" . | nindent 12 }}
             {{- if .Values.mda.extraEnvVars }}
             {{- include "common.tplvalues.render" (dict "value" .Values.mda.extraEnvVars "context" $) | nindent 12 }}
