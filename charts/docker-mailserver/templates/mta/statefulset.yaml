@@ -156,6 +156,8 @@ spec:
             - tcp://{{ printf "%s-headless" (include "docker-mailserver.mda" .) }}:2003
             - --wait
             - tcp://{{ printf "%s-headless" (include "docker-mailserver.mda" .) }}:2004
+            - --wait
+            - tcp://{{ printf "%s-headless" (include "docker-mailserver.filter" .) }}:11332
             - /bin/true
           env:
             {{- if .Values.mta.extraEnvVars }}
