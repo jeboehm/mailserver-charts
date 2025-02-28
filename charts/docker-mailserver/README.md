@@ -1,6 +1,6 @@
 # docker-mailserver
 
-![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![AppVersion: v4.0.0](https://img.shields.io/badge/AppVersion-v4.0.0-informational?style=flat-square)
+![Version: 0.0.10](https://img.shields.io/badge/Version-0.0.10-informational?style=flat-square) ![AppVersion: v4.1.0](https://img.shields.io/badge/AppVersion-v4.1.0-informational?style=flat-square)
 
 Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible.
 
@@ -18,9 +18,9 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 
 | Repository | Name | Version |
 |------------|------|---------|
-| oci://registry-1.docker.io/bitnamicharts | common | 2.29.1 |
-| oci://registry-1.docker.io/bitnamicharts | mariadb | 20.2.2 |
-| oci://registry-1.docker.io/bitnamicharts | redis | 20.7.0 |
+| oci://registry-1.docker.io/bitnamicharts | common | 2.30.0 |
+| oci://registry-1.docker.io/bitnamicharts | mariadb | 20.4.1 |
+| oci://registry-1.docker.io/bitnamicharts | redis | 20.10.0 |
 
 ## Values
 
@@ -31,6 +31,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | config.admin.domain | string | `"example.com"` |  |
 | config.admin.name | string | `"admin"` |  |
 | config.admin.password | string | `""` |  |
+| config.filter.controllerPassword | string | `"q1"` |  |
 | config.mailname | string | `"mail.example.com"` |  |
 | config.postmaster | string | `"postmaster@example.com"` |  |
 | config.recipientDelimiter | string | `"-"` |  |
@@ -65,12 +66,10 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | filter.extraVolumeMounts | list | `[]` |  |
 | filter.extraVolumes | list | `[]` |  |
 | filter.hostAliases | list | `[]` |  |
-| filter.image.digest | string | `""` |  |
 | filter.image.pullPolicy | string | `"IfNotPresent"` |  |
 | filter.image.pullSecrets | list | `[]` |  |
 | filter.image.registry | string | `"docker.io"` |  |
 | filter.image.repository | string | `"jeboehm/mailserver-filter"` |  |
-| filter.image.tag | string | `"next"` |  |
 | filter.initContainers | list | `[]` |  |
 | filter.lifecycleHooks | object | `{}` |  |
 | filter.livenessProbe.enabled | bool | `true` |  |
@@ -87,7 +86,8 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | filter.pdb.maxUnavailable | string | `""` |  |
 | filter.pdb.minAvailable | string | `""` |  |
 | filter.podAffinityPreset | string | `""` |  |
-| filter.podAnnotations | object | `{}` |  |
+| filter.podAnnotations.checksum/config | string | `"{{ include (print $.Template.BasePath \"/configmap.yaml\") . | sha256sum }}"` |  |
+| filter.podAnnotations.checksum/credentials | string | `"{{ include \"docker-mailserver.databaseEnvs\" . | sha256sum }}"` |  |
 | filter.podAntiAffinityPreset | string | `"soft"` |  |
 | filter.podLabels | object | `{}` |  |
 | filter.podSecurityContext.enabled | bool | `true` |  |
@@ -165,20 +165,18 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | mda.extraVolumeMounts | list | `[]` |  |
 | mda.extraVolumes | list | `[]` |  |
 | mda.hostAliases | list | `[]` |  |
-| mda.image.digest | string | `""` |  |
 | mda.image.pullPolicy | string | `"IfNotPresent"` |  |
 | mda.image.pullSecrets | list | `[]` |  |
 | mda.image.registry | string | `"docker.io"` |  |
 | mda.image.repository | string | `"jeboehm/mailserver-mda"` |  |
-| mda.image.tag | string | `"next"` |  |
 | mda.initContainers | list | `[]` |  |
 | mda.lifecycleHooks | object | `{}` |  |
 | mda.livenessProbe.enabled | bool | `true` |  |
-| mda.livenessProbe.failureThreshold | int | `5` |  |
-| mda.livenessProbe.initialDelaySeconds | int | `10` |  |
-| mda.livenessProbe.periodSeconds | int | `10` |  |
+| mda.livenessProbe.failureThreshold | int | `3` |  |
+| mda.livenessProbe.initialDelaySeconds | int | `15` |  |
+| mda.livenessProbe.periodSeconds | int | `20` |  |
 | mda.livenessProbe.successThreshold | int | `1` |  |
-| mda.livenessProbe.timeoutSeconds | int | `15` |  |
+| mda.livenessProbe.timeoutSeconds | int | `5` |  |
 | mda.nodeAffinityPreset.key | string | `""` |  |
 | mda.nodeAffinityPreset.type | string | `""` |  |
 | mda.nodeAffinityPreset.values | list | `[]` |  |
@@ -187,7 +185,8 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | mda.pdb.maxUnavailable | string | `""` |  |
 | mda.pdb.minAvailable | string | `""` |  |
 | mda.podAffinityPreset | string | `""` |  |
-| mda.podAnnotations | object | `{}` |  |
+| mda.podAnnotations.checksum/config | string | `"{{ include (print $.Template.BasePath \"/configmap.yaml\") . | sha256sum }}"` |  |
+| mda.podAnnotations.checksum/credentials | string | `"{{ include \"docker-mailserver.databaseEnvs\" . | sha256sum }}"` |  |
 | mda.podAntiAffinityPreset | string | `"soft"` |  |
 | mda.podLabels | object | `{}` |  |
 | mda.podSecurityContext.enabled | bool | `true` |  |
@@ -196,7 +195,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | mda.priorityClassName | string | `""` |  |
 | mda.replicaCount | int | `1` |  |
 | mda.resources | object | `{}` |  |
-| mda.resourcesPreset | string | `"micro"` |  |
+| mda.resourcesPreset | string | `"small"` |  |
 | mda.schedulerName | string | `""` |  |
 | mda.service.annotations | object | `{}` |  |
 | mda.service.clusterIP | string | `""` |  |
@@ -238,12 +237,10 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | mta.extraVolumeMounts | list | `[]` |  |
 | mta.extraVolumes | list | `[]` |  |
 | mta.hostAliases | list | `[]` |  |
-| mta.image.digest | string | `""` |  |
 | mta.image.pullPolicy | string | `"IfNotPresent"` |  |
 | mta.image.pullSecrets | list | `[]` |  |
 | mta.image.registry | string | `"docker.io"` |  |
 | mta.image.repository | string | `"jeboehm/mailserver-mta"` |  |
-| mta.image.tag | string | `"next"` |  |
 | mta.initContainers | list | `[]` |  |
 | mta.kind | string | `"StatefulSet"` |  |
 | mta.lifecycleHooks | object | `{}` |  |
@@ -261,7 +258,8 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | mta.pdb.maxUnavailable | string | `""` |  |
 | mta.pdb.minAvailable | string | `""` |  |
 | mta.podAffinityPreset | string | `""` |  |
-| mta.podAnnotations | object | `{}` |  |
+| mta.podAnnotations.checksum/config | string | `"{{ include (print $.Template.BasePath \"/configmap.yaml\") . | sha256sum }}"` |  |
+| mta.podAnnotations.checksum/credentials | string | `"{{ include \"docker-mailserver.databaseEnvs\" . | sha256sum }}"` |  |
 | mta.podAntiAffinityPreset | string | `"soft"` |  |
 | mta.podLabels | object | `{}` |  |
 | mta.podSecurityContext.enabled | bool | `true` |  |
@@ -270,7 +268,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | mta.priorityClassName | string | `""` |  |
 | mta.replicaCount | int | `1` |  |
 | mta.resources | object | `{}` |  |
-| mta.resourcesPreset | string | `"small"` |  |
+| mta.resourcesPreset | string | `"micro"` |  |
 | mta.schedulerName | string | `""` |  |
 | mta.service.annotations | object | `{}` |  |
 | mta.service.clusterIP | string | `""` |  |
@@ -332,12 +330,10 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | virus.extraVolumeMounts | list | `[]` |  |
 | virus.extraVolumes | list | `[]` |  |
 | virus.hostAliases | list | `[]` |  |
-| virus.image.digest | string | `""` |  |
 | virus.image.pullPolicy | string | `"IfNotPresent"` |  |
 | virus.image.pullSecrets | list | `[]` |  |
 | virus.image.registry | string | `"docker.io"` |  |
 | virus.image.repository | string | `"jeboehm/mailserver-virus"` |  |
-| virus.image.tag | string | `"next"` |  |
 | virus.initContainers | list | `[]` |  |
 | virus.lifecycleHooks | object | `{}` |  |
 | virus.livenessProbe.enabled | bool | `true` |  |
@@ -354,7 +350,8 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | virus.pdb.maxUnavailable | string | `""` |  |
 | virus.pdb.minAvailable | string | `""` |  |
 | virus.podAffinityPreset | string | `""` |  |
-| virus.podAnnotations | object | `{}` |  |
+| virus.podAnnotations.checksum/config | string | `"{{ include (print $.Template.BasePath \"/configmap.yaml\") . | sha256sum }}"` |  |
+| virus.podAnnotations.checksum/credentials | string | `"{{ include \"docker-mailserver.databaseEnvs\" . | sha256sum }}"` |  |
 | virus.podAntiAffinityPreset | string | `"soft"` |  |
 | virus.podLabels | object | `{}` |  |
 | virus.podSecurityContext.enabled | bool | `true` |  |
@@ -393,12 +390,10 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | web.extraVolumeMounts | list | `[]` |  |
 | web.extraVolumes | list | `[]` |  |
 | web.hostAliases | list | `[]` |  |
-| web.image.digest | string | `""` |  |
 | web.image.pullPolicy | string | `"IfNotPresent"` |  |
 | web.image.pullSecrets | list | `[]` |  |
 | web.image.registry | string | `"docker.io"` |  |
 | web.image.repository | string | `"jeboehm/mailserver-web"` |  |
-| web.image.tag | string | `"next"` |  |
 | web.initContainers | list | `[]` |  |
 | web.lifecycleHooks | object | `{}` |  |
 | web.livenessProbe.enabled | bool | `true` |  |
@@ -415,7 +410,8 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | web.pdb.maxUnavailable | string | `""` |  |
 | web.pdb.minAvailable | string | `""` |  |
 | web.podAffinityPreset | string | `""` |  |
-| web.podAnnotations | object | `{}` |  |
+| web.podAnnotations.checksum/config | string | `"{{ include (print $.Template.BasePath \"/configmap.yaml\") . | sha256sum }}"` |  |
+| web.podAnnotations.checksum/credentials | string | `"{{ include \"docker-mailserver.databaseEnvs\" . | sha256sum }}"` |  |
 | web.podAntiAffinityPreset | string | `"soft"` |  |
 | web.podLabels | object | `{}` |  |
 | web.podSecurityContext.enabled | bool | `true` |  |
