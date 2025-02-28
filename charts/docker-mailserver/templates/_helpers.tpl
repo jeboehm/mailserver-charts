@@ -211,3 +211,28 @@ Return the MariaDB Secret Name
     {{- printf "%s-externaldb" (include "common.names.fullname" .) -}}
 {{- end -}}
 {{- end -}}
+
+{{- define "docker-mailserver.databaseEnvs" -}}
+- name: MYSQL_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "docker-mailserver.databaseSecretName" . }}
+      key: mariadb-password
+{{- if and .Values.redis.enabled (include "docker-mailserver.redis.auth.enabled" .) }}
+- name: REDIS_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ include "docker-mailserver.redis.secretName" . }}
+      key: {{ include "docker-mailserver.redis.secretPasswordKey" . }}
+{{- else if .Values.externalRedis.enabled }}
+- name: REDIS_PASSWORD
+  {{- if not ( eq "" .Values.externalRedis.password ) }}
+  value: {{ .Values.externalRedis.password }}
+  {{- else }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.externalRedis.existingSecret }}
+      key: {{ .Values.externalRedis.existingSecretPasswordKey }}
+  {{- end }}
+{{- end }}
+{{- end -}}
