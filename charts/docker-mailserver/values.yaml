@@ -39,6 +39,10 @@ config:
     name: admin
     domain: example.com
     password: ''
+  filter:
+    ## @param filter.controllerPassword Password for the filter controller
+    ##
+    controllerPassword: q1
 
 ## @section Mail parameters
 
