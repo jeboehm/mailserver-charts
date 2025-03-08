@@ -18,6 +18,56 @@ entries:
           image: docker.io/bitnami/redis:latest
       licenses: MIT
     apiVersion: v2
+    appVersion: v4.2.4
+    created: "2025-03-08T07:06:11.485793944Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 20.11.2
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 20.4.1
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.30.0
+    description: Docker Mailserver based on the famous ISPMail guide. All images are
+      based on Alpine Linux and are so small as possible.
+    digest: ef9ce0af945d3273a4d6c1752ac4bf0d8a0185696b16524285cf6e847dc71dda
+    keywords:
+    - postfix
+    - dovecot
+    - mail
+    - mailserver
+    - smtp
+    - imap
+    - docker-mailserver
+    maintainers:
+    - name: jeboehm
+    name: docker-mailserver
+    sources:
+    - https://github.com/jeboehm/docker-mailserver
+    urls:
+    - https://github.com/jeboehm/mailserver-charts/releases/download/docker-mailserver-0.0.17/docker-mailserver-0.0.17.tgz
+    version: 0.0.17
+  - annotations:
+      category: Mail
+      images: |
+        - name: mailserver-mta
+          image: docker.io/jeboehm/mailserver-mta:latest
+        - name: mailserver-mda
+          image: docker.io/jeboehm/mailserver-mda:latest
+        - name: mailserver-filter
+          image: docker.io/jeboehm/mailserver-filter:latest
+        - name: mailserver-web
+          image: docker.io/jeboehm/mailserver-web:latest
+        - name: mailserver-virus
+          image: docker.io/jeboehm/mailserver-virus:latest
+        - name: redis
+          image: docker.io/bitnami/redis:latest
+      licenses: MIT
+    apiVersion: v2
     appVersion: v4.2.3
     created: "2025-03-04T06:15:31.106364047Z"
     dependencies:
@@ -806,4 +856,4 @@ entries:
     urls:
     - https://github.com/jeboehm/mailserver-charts/releases/download/docker-mailserver-0.0.1/docker-mailserver-0.0.1.tgz
     version: 0.0.1
-generated: "2025-03-04T06:15:31.106458092Z"
+generated: "2025-03-08T07:06:11.485932973Z"
