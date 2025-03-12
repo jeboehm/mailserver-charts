@@ -733,6 +733,7 @@ mda:
   podAnnotations:
     checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
     checksum/credentials: '{{ include "docker-mailserver.databaseEnvs" . | sha256sum }}'
+    backup.velero.io/backup-volumes: vmail
   ## @param podLabels Add additional labels to the pod (evaluated as a template)
   ## ref: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
   ##
