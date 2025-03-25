@@ -1,55 +1,31 @@
-{{/*
-Create a default fully qualified redis name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
 {{- define "docker-mailserver.redis.fullname" -}}
 {{- include "common.names.dependency.fullname" (dict "chartName" "redis" "chartValues" .Values.redis "context" $) -}}
 {{- end -}}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
 {{- define "docker-mailserver.mariadb.fullname" -}}
 {{- include "common.names.dependency.fullname" (dict "chartName" "mariadb" "chartValues" .Values.mariadb "context" $) -}}
 {{- end -}}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
 {{- define "docker-mailserver.mda" -}}
   {{- printf "%s-mda" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
 {{- end -}}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
 {{- define "docker-mailserver.virus" -}}
   {{- printf "%s-virus" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
 {{- end -}}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
 {{- define "docker-mailserver.mta" -}}
   {{- printf "%s-mta" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
 {{- end -}}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
 {{- define "docker-mailserver.filter" -}}
   {{- printf "%s-filter" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
 {{- end -}}
 
-{{/*
-Create a default fully qualified app name.
-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
-*/}}
+{{- define "docker-mailserver.fetchmail" -}}
+  {{- printf "%s-filter" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
+{{- end -}}
+
 {{- define "docker-mailserver.web" -}}
   {{- printf "%s-web" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
 {{- end -}}
@@ -80,6 +56,11 @@ We truncate at 63 chars because some Kubernetes name fields are limited to this 
 
 {{- define "docker-mailserver.web.image" -}}
 {{- include "common.images.image" ( dict "imageRoot" .Values.web.image "global" .Values.global "chart" .Chart ) -}}
+{{- end -}}
+
+
+{{- define "docker-mailserver.fetchmail.image" -}}
+{{- include "common.images.image" ( dict "imageRoot" .Values.fetchmail.image "global" .Values.global "chart" .Chart ) -}}
 {{- end -}}
 
 {{/*

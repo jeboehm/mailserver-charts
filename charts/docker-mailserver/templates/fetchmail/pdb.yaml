@@ -1,0 +1,25 @@
+---
+
+{{- if .Values.fetchmail.pdb.create }}
+apiVersion: {{ include "common.capabilities.policy.apiVersion" . }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "docker-mailserver.fetchmail" . }}
+  namespace: {{ include "common.names.namespace" . | quote }}
+  labels: {{- include "common.labels.standard" ( dict "customLabels" .Values.commonLabels "context" $ ) | nindent 4 }}
+    app.kubernetes.io/component: fetchmail
+  {{- if .Values.commonAnnotations }}
+  annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if .Values.fetchmail.pdb.minAvailable }}
+  minAvailable: {{ .Values.fetchmail.pdb.minAvailable }}
+  {{- end }}
+  {{- if or .Values.fetchmail.pdb.maxUnavailable ( not .Values.fetchmail.pdb.minAvailable ) }}
+  maxUnavailable: {{ .Values.fetchmail.pdb.maxUnavailable | default 1 }}
+  {{- end }}
+  {{- $podLabels := include "common.tplvalues.merge" ( dict "values" ( list .Values.fetchmail.podLabels .Values.commonLabels ) "context" . ) }}
+  selector:
+    matchLabels: {{- include "common.labels.matchLabels" ( dict "customLabels" $podLabels "context" $ ) | nindent 6 }}
+      app.kubernetes.io/component: fetchmail
+{{- end }}
