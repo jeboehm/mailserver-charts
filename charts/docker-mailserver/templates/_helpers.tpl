@@ -23,7 +23,7 @@
 {{- end -}}
 
 {{- define "docker-mailserver.fetchmail" -}}
-  {{- printf "%s-filter" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
+  {{- printf "%s-fetchmail" (include "common.names.fullname" .) | trunc 63 | trimSuffix "-" }}
 {{- end -}}
 
 {{- define "docker-mailserver.web" -}}
