@@ -70,9 +70,12 @@ spec:
           {{- if .Values.fetchmail.containerSecurityContext.enabled }}
           securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.fetchmail.containerSecurityContext "context" $) | nindent 12 }}
           {{- end }}
+          command:
+            - /usr/local/bin/node
+            - /app/index.js
           args:
             - --interval
-            - {{ .Values.fetchmail.interval }}
+            - "{{ .Values.fetchmail.interval }}"
           ports:
             - name: http
               containerPort: 3000
