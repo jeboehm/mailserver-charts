@@ -1319,7 +1319,7 @@ fetchmail:
   ## terminate the single previous pod, so that the new, incoming pod can attach to the PV
   ##
   updateStrategy:
-    type: Replace
+    type: RollingUpdate
 
   ## @param priorityClassName docker-mailserver pods' priorityClassName
   ##
