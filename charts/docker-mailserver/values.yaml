@@ -1293,7 +1293,7 @@ fetchmail:
   image:
     registry: ghcr.io
     repository: jeboehm/fetchmailmgr
-    tag: 0.1.0
+    tag: 0.2.0
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
     ##
@@ -1306,9 +1306,6 @@ fetchmail:
     ##   - myRegistryKeySecretName
     ##
     pullSecrets: []
-
-  ## @param replicaCount Number of mda to run (requires ReadWriteMany PVC support)
-  replicaCount: 1
 
   ## @param interval Interval to fetch mail
   interval: 300
@@ -1340,9 +1337,9 @@ fetchmail:
   ## @param extraEnvVars Extra environment variables
   ## For example:
   ##
-  extraEnvVars: []
-  #  - name: BEARER_AUTH
-  #    value: true
+  extraEnvVars:
+   - name: DEBUG
+     value: "true"
   ## @param extraEnvVarsCM ConfigMap containing extra env vars
   ##
   extraEnvVarsCM: ''

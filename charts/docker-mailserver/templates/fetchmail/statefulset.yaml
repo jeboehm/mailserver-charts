@@ -11,7 +11,7 @@ metadata:
   annotations: {{- include "common.tplvalues.render" ( dict "value" .Values.commonAnnotations "context" $ ) | nindent 4 }}
   {{- end }}
 spec:
-  replicas: {{ .Values.fetchmail.replicaCount }}
+  replicas: 1
   {{- if .Values.fetchmail.updateStrategy }}
   updateStrategy: {{- toYaml .Values.fetchmail.updateStrategy | nindent 4 }}
   {{- end }}
