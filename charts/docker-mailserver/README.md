@@ -1,6 +1,6 @@
 # docker-mailserver
 
-![Version: 0.0.20](https://img.shields.io/badge/Version-0.0.20-informational?style=flat-square) ![AppVersion: v4.2.7](https://img.shields.io/badge/AppVersion-v4.2.7-informational?style=flat-square)
+![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![AppVersion: v4.2.8](https://img.shields.io/badge/AppVersion-v4.2.8-informational?style=flat-square)
 
 Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible.
 
@@ -49,6 +49,65 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | externalRedis.port | int | `6379` |  |
 | externalRedis.selector | object | `{}` |  |
 | extraDeploy | list | `[]` |  |
+| fetchmail.affinity | object | `{}` |  |
+| fetchmail.containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
+| fetchmail.containerSecurityContext.capabilities.drop[0] | string | `"ALL"` |  |
+| fetchmail.containerSecurityContext.enabled | bool | `true` |  |
+| fetchmail.containerSecurityContext.privileged | bool | `false` |  |
+| fetchmail.containerSecurityContext.readOnlyRootFilesystem | bool | `true` |  |
+| fetchmail.containerSecurityContext.runAsGroup | int | `65534` |  |
+| fetchmail.containerSecurityContext.runAsNonRoot | bool | `true` |  |
+| fetchmail.containerSecurityContext.runAsUser | int | `65534` |  |
+| fetchmail.containerSecurityContext.seLinuxOptions | object | `{}` |  |
+| fetchmail.containerSecurityContext.seccompProfile.type | string | `"RuntimeDefault"` |  |
+| fetchmail.customLivenessProbe | object | `{}` |  |
+| fetchmail.extraEnvVarsCM | string | `""` |  |
+| fetchmail.extraEnvVarsSecret | string | `""` |  |
+| fetchmail.extraEnvVars[0].name | string | `"DEBUG"` |  |
+| fetchmail.extraEnvVars[0].value | string | `"true"` |  |
+| fetchmail.extraVolumeMounts | list | `[]` |  |
+| fetchmail.extraVolumes | list | `[]` |  |
+| fetchmail.hostAliases | list | `[]` |  |
+| fetchmail.image.pullPolicy | string | `"IfNotPresent"` |  |
+| fetchmail.image.pullSecrets | list | `[]` |  |
+| fetchmail.image.registry | string | `"ghcr.io"` |  |
+| fetchmail.image.repository | string | `"jeboehm/fetchmailmgr"` |  |
+| fetchmail.image.tag | string | `"0.2.0"` |  |
+| fetchmail.initContainers | list | `[]` |  |
+| fetchmail.interval | int | `300` |  |
+| fetchmail.lifecycleHooks | object | `{}` |  |
+| fetchmail.livenessProbe.enabled | bool | `true` |  |
+| fetchmail.livenessProbe.failureThreshold | int | `5` |  |
+| fetchmail.livenessProbe.initialDelaySeconds | int | `15` |  |
+| fetchmail.livenessProbe.periodSeconds | int | `10` |  |
+| fetchmail.livenessProbe.successThreshold | int | `1` |  |
+| fetchmail.livenessProbe.timeoutSeconds | int | `15` |  |
+| fetchmail.nodeAffinityPreset.key | string | `""` |  |
+| fetchmail.nodeAffinityPreset.type | string | `""` |  |
+| fetchmail.nodeAffinityPreset.values | list | `[]` |  |
+| fetchmail.nodeSelector | object | `{}` |  |
+| fetchmail.pdb.create | bool | `true` |  |
+| fetchmail.pdb.maxUnavailable | string | `""` |  |
+| fetchmail.pdb.minAvailable | string | `""` |  |
+| fetchmail.podAffinityPreset | string | `""` |  |
+| fetchmail.podAnnotations.checksum/config | string | `"{{ include (print $.Template.BasePath \"/configmap.yaml\") . | sha256sum }}"` |  |
+| fetchmail.podAnnotations.checksum/credentials | string | `"{{ include \"docker-mailserver.databaseEnvs\" . | sha256sum }}"` |  |
+| fetchmail.podAntiAffinityPreset | string | `"soft"` |  |
+| fetchmail.podLabels | object | `{}` |  |
+| fetchmail.podSecurityContext.enabled | bool | `true` |  |
+| fetchmail.podSecurityContext.fsGroup | int | `65534` |  |
+| fetchmail.podSecurityContext.fsGroupChangePolicy | string | `"Always"` |  |
+| fetchmail.podSecurityContext.supplementalGroups | list | `[]` |  |
+| fetchmail.podSecurityContext.sysctls | list | `[]` |  |
+| fetchmail.priorityClassName | string | `""` |  |
+| fetchmail.resources | object | `{}` |  |
+| fetchmail.resourcesPreset | string | `"micro"` |  |
+| fetchmail.schedulerName | string | `""` |  |
+| fetchmail.sessionAffinity | string | `"None"` |  |
+| fetchmail.sidecars | list | `[]` |  |
+| fetchmail.tolerations | list | `[]` |  |
+| fetchmail.topologySpreadConstraints | list | `[]` |  |
+| fetchmail.updateStrategy.type | string | `"RollingUpdate"` |  |
 | filter.affinity | object | `{}` |  |
 | filter.containerSecurityContext.allowPrivilegeEscalation | bool | `false` |  |
 | filter.containerSecurityContext.enabled | bool | `true` |  |
@@ -185,6 +244,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | mda.pdb.maxUnavailable | string | `""` |  |
 | mda.pdb.minAvailable | string | `""` |  |
 | mda.podAffinityPreset | string | `""` |  |
+| mda.podAnnotations."backup.velero.io/backup-volumes" | string | `"vmail"` |  |
 | mda.podAnnotations.checksum/config | string | `"{{ include (print $.Template.BasePath \"/configmap.yaml\") . | sha256sum }}"` |  |
 | mda.podAnnotations.checksum/credentials | string | `"{{ include \"docker-mailserver.databaseEnvs\" . | sha256sum }}"` |  |
 | mda.podAntiAffinityPreset | string | `"soft"` |  |
