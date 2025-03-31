@@ -72,7 +72,7 @@ spec:
           {{- end }}
           command:
             - /usr/local/bin/node
-            - /app/index.js
+            - /app/src/index.js
           args:
             - --interval
             - "{{ .Values.fetchmail.interval }}"
