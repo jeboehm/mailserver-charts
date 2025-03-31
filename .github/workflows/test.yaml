@@ -7,9 +7,6 @@ on:
 
 jobs:
   test:
-    permissions:
-      contents: write
-
     runs-on: ubuntu-latest
 
     steps:
@@ -36,20 +33,14 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Bump Helm chart version
-        if: steps.list-changed.outputs.changed == 'true'
-        uses: explorium-ai/bump-helm-chart-action@main
-        with:
-          chart-path: charts/docker-mailserver
-          level: patch
-
       - name: Run chart-testing (lint)
         if: steps.list-changed.outputs.changed == 'true'
-        run: ct lint --target-branch ${{ github.event.repository.default_branch }}
+        run: ct lint
 
       # - name: Create kind cluster
       #   if: steps.list-changed.outputs.changed == 'true'
       #   uses: helm/kind-action@v1.12.0
 
       # - name: Run chart-testing (install)
-      #   run: ct install --chart-dirs=manifests
+      #   if: steps.list-changed.outputs.changed == 'true'
+      #   run: ct install --target-branch ${{ github.event.repository.default_branch }}
