@@ -1,6 +1,6 @@
 # docker-mailserver
 
-![Version: 0.1.5](https://img.shields.io/badge/Version-0.1.5-informational?style=flat-square) ![AppVersion: v4.2.8](https://img.shields.io/badge/AppVersion-v4.2.8-informational?style=flat-square)
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![AppVersion: v4.2.9](https://img.shields.io/badge/AppVersion-v4.2.9-informational?style=flat-square)
 
 Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible.
 
@@ -19,8 +19,8 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | Repository | Name | Version |
 |------------|------|---------|
 | oci://registry-1.docker.io/bitnamicharts | common | 2.30.0 |
-| oci://registry-1.docker.io/bitnamicharts | mariadb | 20.4.1 |
-| oci://registry-1.docker.io/bitnamicharts | redis | 20.11.2 |
+| oci://registry-1.docker.io/bitnamicharts | mariadb | 20.4.2 |
+| oci://registry-1.docker.io/bitnamicharts | redis | 20.11.4 |
 
 ## Values
 
@@ -72,7 +72,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | fetchmail.image.pullSecrets | list | `[]` |  |
 | fetchmail.image.registry | string | `"ghcr.io"` |  |
 | fetchmail.image.repository | string | `"jeboehm/fetchmailmgr"` |  |
-| fetchmail.image.tag | string | `"0.2.0"` |  |
+| fetchmail.image.tag | string | `"0.2.1"` |  |
 | fetchmail.initContainers | list | `[]` |  |
 | fetchmail.interval | int | `300` |  |
 | fetchmail.lifecycleHooks | object | `{}` |  |
@@ -370,7 +370,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | redis.image.pullSecrets | list | `[]` |  |
 | redis.image.registry | string | `"docker.io"` |  |
 | redis.image.repository | string | `"bitnami/redis"` |  |
-| redis.image.tag | string | `"7.4.2-debian-12-r5"` |  |
+| redis.image.tag | string | `"7.4.2-debian-12-r6"` |  |
 | redis.nameOverride | string | `""` |  |
 | redis.service.ports.redis | int | `6379` |  |
 | virus.affinity | object | `{}` |  |
@@ -422,8 +422,8 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | virus.priorityClassName | string | `""` |  |
 | virus.replicaCount | int | `1` |  |
 | virus.resources | object | `{}` |  |
-| virus.resourcesPreset | string | `"medium"` |  |
-| virus.resourcesPresetUpdate | string | `"small"` |  |
+| virus.resourcesPreset | string | `"large"` |  |
+| virus.resourcesPresetUpdate | string | `"medium"` |  |
 | virus.resourcesUpdate | object | `{}` |  |
 | virus.schedulerName | string | `""` |  |
 | virus.sessionAffinity | string | `"None"` |  |
