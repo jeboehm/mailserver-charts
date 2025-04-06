@@ -1,52 +1,36 @@
----
-
 name: Test Helm charts
-
 on:
   pull_request:
-
+env:
+  CHART_PATH: charts/docker-mailserver
 jobs:
   test:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
       - uses: azure/setup-helm@v4.3.0
         with:
           version: v3.17.0
-
       - uses: actions/setup-python@v5.5.0
         with:
           python-version: '3.x'
           check-latest: true
-
-      - uses: actions/cache@v4
-        with:
-          path: charts/docker-mailserver/charts
-          key: ${{ runner.os }}-helm-${{ hashFiles('charts/docker-mailserver/Chart.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-helm-
-
       - uses: helm/chart-testing-action@v2.7.0
-
       - name: Install chart dependencies
         run: |
-          cd charts/docker-mailserver
+          cd "$CHART_PATH"
           helm dependency build
-
       - name: Lint chart
         run: |
-          cd charts/docker-mailserver
+          cd "$CHART_PATH"
           helm lint .
 
+# - name: Create kind cluster
+#   if: steps.list-changed.outputs.changed == 'true'
+#   uses: helm/kind-action@v1.12.0
 
-      # - name: Create kind cluster
-      #   if: steps.list-changed.outputs.changed == 'true'
-      #   uses: helm/kind-action@v1.12.0
-
-      # - name: Run chart-testing (install)
-      #   if: steps.list-changed.outputs.changed == 'true'
-      #   run: ct install --target-branch ${{ github.event.repository.default_branch }}
+# - name: Run chart-testing (install)
+#   if: steps.list-changed.outputs.changed == 'true'
+#   run: ct install --target-branch ${{ github.event.repository.default_branch }}
