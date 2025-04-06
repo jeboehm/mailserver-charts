@@ -1,6 +1,6 @@
 # docker-mailserver
 
-![Version: 0.1.7](https://img.shields.io/badge/Version-0.1.7-informational?style=flat-square) ![AppVersion: v4.2.10](https://img.shields.io/badge/AppVersion-v4.2.10-informational?style=flat-square)
+![Version: 0.1.8](https://img.shields.io/badge/Version-0.1.8-informational?style=flat-square)
 
 Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible.
 
@@ -72,7 +72,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | fetchmail.image.pullSecrets | list | `[]` |  |
 | fetchmail.image.registry | string | `"ghcr.io"` |  |
 | fetchmail.image.repository | string | `"jeboehm/fetchmailmgr"` |  |
-| fetchmail.image.tag | string | `"0.2.1"` |  |
+| fetchmail.image.tag | string | `"0.3.3"` |  |
 | fetchmail.initContainers | list | `[]` |  |
 | fetchmail.interval | int | `300` |  |
 | fetchmail.lifecycleHooks | object | `{}` |  |
@@ -370,7 +370,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | redis.image.pullSecrets | list | `[]` |  |
 | redis.image.registry | string | `"docker.io"` |  |
 | redis.image.repository | string | `"bitnami/redis"` |  |
-| redis.image.tag | string | `"7.4.2-debian-12-r6"` |  |
+| redis.image.tag | string | `"7.4.2-debian-12-r7"` |  |
 | redis.nameOverride | string | `""` |  |
 | redis.service.ports.redis | int | `6379` |  |
 | virus.affinity | object | `{}` |  |
