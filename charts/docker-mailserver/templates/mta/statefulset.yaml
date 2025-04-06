@@ -1,6 +1,6 @@
 ---
 
-apiVersion: {{ include "common.capabilities.deployment.apiVersion" . }}
+apiVersion: {{ include "common.capabilities.statefulset.apiVersion" . }}
 kind: {{ .Values.mta.kind }}
 metadata:
   name: {{ include "docker-mailserver.mta" . }}
