@@ -1,6 +1,6 @@
 # docker-mailserver
 
-![Version: 0.1.8](https://img.shields.io/badge/Version-0.1.8-informational?style=flat-square)
+![Version: 0.1.12](https://img.shields.io/badge/Version-0.1.12-informational?style=flat-square) ![AppVersion: 5.0.4](https://img.shields.io/badge/AppVersion-5.0.4-informational?style=flat-square)
 
 Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible.
 
@@ -370,7 +370,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | redis.image.pullSecrets | list | `[]` |  |
 | redis.image.registry | string | `"docker.io"` |  |
 | redis.image.repository | string | `"bitnami/redis"` |  |
-| redis.image.tag | string | `"7.4.2-debian-12-r7"` |  |
+| redis.image.tag | string | `"7.4.2-debian-12-r8"` |  |
 | redis.nameOverride | string | `""` |  |
 | redis.service.ports.redis | int | `6379` |  |
 | virus.affinity | object | `{}` |  |
