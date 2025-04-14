@@ -1,6 +1,6 @@
 # docker-mailserver
 
-![Version: 0.1.18](https://img.shields.io/badge/Version-0.1.18-informational?style=flat-square) ![AppVersion: 5.0.10](https://img.shields.io/badge/AppVersion-5.0.10-informational?style=flat-square)
+![Version: 0.1.19](https://img.shields.io/badge/Version-0.1.19-informational?style=flat-square) ![AppVersion: 5.0.11](https://img.shields.io/badge/AppVersion-5.0.11-informational?style=flat-square)
 
 Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible.
 
@@ -101,7 +101,6 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | fetchmail.podSecurityContext.sysctls | list | `[]` |  |
 | fetchmail.priorityClassName | string | `""` |  |
 | fetchmail.resources | object | `{}` |  |
-| fetchmail.resourcesPreset | string | `"micro"` |  |
 | fetchmail.schedulerName | string | `""` |  |
 | fetchmail.sessionAffinity | string | `"None"` |  |
 | fetchmail.sidecars | list | `[]` |  |
@@ -157,7 +156,6 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | filter.priorityClassName | string | `""` |  |
 | filter.replicaCount | int | `1` |  |
 | filter.resources | object | `{}` |  |
-| filter.resourcesPreset | string | `"medium"` |  |
 | filter.schedulerName | string | `""` |  |
 | filter.sessionAffinity | string | `"None"` |  |
 | filter.sidecars | list | `[]` |  |
@@ -255,7 +253,6 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | mda.priorityClassName | string | `""` |  |
 | mda.replicaCount | int | `1` |  |
 | mda.resources | object | `{}` |  |
-| mda.resourcesPreset | string | `"small"` |  |
 | mda.schedulerName | string | `""` |  |
 | mda.service.annotations | object | `{}` |  |
 | mda.service.clusterIP | string | `""` |  |
@@ -328,7 +325,6 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | mta.priorityClassName | string | `""` |  |
 | mta.replicaCount | int | `1` |  |
 | mta.resources | object | `{}` |  |
-| mta.resourcesPreset | string | `"micro"` |  |
 | mta.schedulerName | string | `""` |  |
 | mta.service.annotations | object | `{}` |  |
 | mta.service.clusterIP | string | `""` |  |
@@ -422,8 +418,6 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | virus.priorityClassName | string | `""` |  |
 | virus.replicaCount | int | `1` |  |
 | virus.resources | object | `{}` |  |
-| virus.resourcesPreset | string | `"large"` |  |
-| virus.resourcesPresetUpdate | string | `"medium"` |  |
 | virus.resourcesUpdate | object | `{}` |  |
 | virus.schedulerName | string | `""` |  |
 | virus.sessionAffinity | string | `"None"` |  |
@@ -482,7 +476,6 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | web.priorityClassName | string | `""` |  |
 | web.replicaCount | int | `1` |  |
 | web.resources | object | `{}` |  |
-| web.resourcesPreset | string | `"small"` |  |
 | web.schedulerName | string | `""` |  |
 | web.service.annotations | object | `{}` |  |
 | web.service.clusterIP | string | `""` |  |
