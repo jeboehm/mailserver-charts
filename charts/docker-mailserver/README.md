@@ -1,6 +1,6 @@
 # docker-mailserver
 
-![Version: 0.1.23](https://img.shields.io/badge/Version-0.1.23-informational?style=flat-square) ![AppVersion: 5.0.17](https://img.shields.io/badge/AppVersion-5.0.17-informational?style=flat-square)
+![Version: 0.1.24](https://img.shields.io/badge/Version-0.1.24-informational?style=flat-square) ![AppVersion: 5.0.18](https://img.shields.io/badge/AppVersion-5.0.18-informational?style=flat-square)
 
 Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible.
 
@@ -20,7 +20,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 |------------|------|---------|
 | oci://registry-1.docker.io/bitnamicharts | common | 2.30.0 |
 | oci://registry-1.docker.io/bitnamicharts | mariadb | 20.4.3 |
-| oci://registry-1.docker.io/bitnamicharts | redis | 20.13.0 |
+| oci://registry-1.docker.io/bitnamicharts | redis | 20.13.1 |
 
 ## Values
 
@@ -72,7 +72,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | fetchmail.image.pullSecrets | list | `[]` |  |
 | fetchmail.image.registry | string | `"ghcr.io"` |  |
 | fetchmail.image.repository | string | `"jeboehm/fetchmailmgr"` |  |
-| fetchmail.image.tag | string | `"0.3.6"` |  |
+| fetchmail.image.tag | string | `"0.3.7"` |  |
 | fetchmail.initContainers | list | `[]` |  |
 | fetchmail.interval | int | `300` |  |
 | fetchmail.lifecycleHooks | object | `{}` |  |
