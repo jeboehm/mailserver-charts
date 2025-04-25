@@ -1,6 +1,6 @@
 # docker-mailserver
 
-![Version: 0.1.24](https://img.shields.io/badge/Version-0.1.24-informational?style=flat-square) ![AppVersion: 5.0.18](https://img.shields.io/badge/AppVersion-5.0.18-informational?style=flat-square)
+![Version: 0.1.25](https://img.shields.io/badge/Version-0.1.25-informational?style=flat-square) ![AppVersion: 5.0.19](https://img.shields.io/badge/AppVersion-5.0.19-informational?style=flat-square)
 
 Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible.
 
@@ -20,7 +20,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 |------------|------|---------|
 | oci://registry-1.docker.io/bitnamicharts | common | 2.30.0 |
 | oci://registry-1.docker.io/bitnamicharts | mariadb | 20.4.3 |
-| oci://registry-1.docker.io/bitnamicharts | redis | 20.13.1 |
+| oci://registry-1.docker.io/bitnamicharts | redis | 20.13.2 |
 
 ## Values
 
@@ -370,7 +370,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | redis.image.pullSecrets | list | `[]` |  |
 | redis.image.registry | string | `"docker.io"` |  |
 | redis.image.repository | string | `"bitnami/redis"` |  |
-| redis.image.tag | string | `"7.4.2-debian-12-r11"` |  |
+| redis.image.tag | string | `"7.4.3-debian-12-r0"` |  |
 | redis.nameOverride | string | `""` |  |
 | redis.service.ports.redis | int | `6379` |  |
 | virus.affinity | object | `{}` |  |
