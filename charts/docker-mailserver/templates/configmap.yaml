@@ -35,7 +35,12 @@ data:
 
     ENABLE_IMAP: "true"
     ENABLE_POP3: "true"
+
+    {{- if .Values.config.antivirus.enabled }}
     FILTER_VIRUS: "true"
+    {{- else }}
+    FILTER_VIRUS: "false"
+    {{- end }}
 
     ENABLE_FTS: "true"
     FTS_ARGS: partial=3 full=20 verbose=0 lowmemory=256

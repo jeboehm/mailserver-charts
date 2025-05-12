@@ -122,8 +122,10 @@ spec:
           args:
             - --wait
             - tcp://{{ include "docker-mailserver.redisHost" . }}:{{ include "docker-mailserver.redisPort" . }}
+            {{- if .Values.config.antivirus.enabled }}
             - --wait
             - tcp://{{ printf "%s-headless" (include "docker-mailserver.virus" .) }}:3310
+            {{- end }}
             - /bin/true
           envFrom:
             - configMapRef:

@@ -1,6 +1,6 @@
 ---
 
-{{- if .Values.virus.pdb.create }}
+{{- if and .Values.virus.pdb.create .Values.config.antivirus.enabled }}
 apiVersion: {{ include "common.capabilities.policy.apiVersion" . }}
 kind: PodDisruptionBudget
 metadata:
