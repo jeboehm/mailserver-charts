@@ -43,6 +43,8 @@ config:
     ## @param filter.controllerPassword Password for the filter controller
     ##
     controllerPassword: q1
+  antivirus:
+    enabled: true
 
 ## @section Mail parameters
 
