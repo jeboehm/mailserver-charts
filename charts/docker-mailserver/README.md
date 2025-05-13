@@ -1,6 +1,6 @@
 # docker-mailserver
 
-![Version: 0.1.35](https://img.shields.io/badge/Version-0.1.35-informational?style=flat-square) ![AppVersion: 5.0.29](https://img.shields.io/badge/AppVersion-5.0.29-informational?style=flat-square)
+![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![AppVersion: 5.0.30](https://img.shields.io/badge/AppVersion-5.0.30-informational?style=flat-square)
 
 Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible.
 
@@ -31,6 +31,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | config.admin.domain | string | `"example.com"` |  |
 | config.admin.name | string | `"admin"` |  |
 | config.admin.password | string | `""` |  |
+| config.antivirus.enabled | bool | `true` |  |
 | config.filter.controllerPassword | string | `"q1"` |  |
 | config.mailname | string | `"mail.example.com"` |  |
 | config.postmaster | string | `"postmaster@example.com"` |  |
