@@ -24,7 +24,7 @@ dependencies:
   repository: oci://registry-1.docker.io/bitnamicharts
   condition: redis.enabled
 - name: mariadb
-  version: 20.5.5
+  version: 20.5.6
   repository: oci://registry-1.docker.io/bitnamicharts
   condition: mariadb.enabled
 - name: common
