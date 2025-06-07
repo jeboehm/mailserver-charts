@@ -1,6 +1,6 @@
 # docker-mailserver
 
-![Version: 0.2.16](https://img.shields.io/badge/Version-0.2.16-informational?style=flat-square) ![AppVersion: 5.0.45](https://img.shields.io/badge/AppVersion-5.0.45-informational?style=flat-square)
+![Version: 0.2.17](https://img.shields.io/badge/Version-0.2.17-informational?style=flat-square) ![AppVersion: 5.0.46](https://img.shields.io/badge/AppVersion-5.0.46-informational?style=flat-square)
 
 Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible.
 
@@ -19,7 +19,7 @@ Docker Mailserver based on the famous ISPMail guide. All images are based on Alp
 | Repository | Name | Version |
 |------------|------|---------|
 | oci://registry-1.docker.io/bitnamicharts | common | 2.31.1 |
-| oci://registry-1.docker.io/bitnamicharts | mariadb | 20.5.6 |
+| oci://registry-1.docker.io/bitnamicharts | mariadb | 20.5.7 |
 | oci://registry-1.docker.io/bitnamicharts | redis | 20.13.4 |
 
 ## Values
