@@ -204,9 +204,16 @@ spec:
           {{- if .Values.filter.lifecycleHooks }}
           lifecycle: {{- include "common.tplvalues.render" (dict "value" .Values.filter.lifecycleHooks "context" $) | nindent 12 }}
           {{- end }}
-          {{- if .Values.filter.containerSecurityContext.enabled }}
-          securityContext: {{- include "common.compatibility.renderSecurityContext" (dict "secContext" .Values.filter.containerSecurityContext "context" $) | nindent 12 }}
-          {{- end }}
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+            seLinuxOptions: {}
+            runAsUser: 0
+            runAsGroup: 0
+            runAsNonRoot: false
+            privileged: false
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: false
           command:
             - /unbound.sh
           ports:
