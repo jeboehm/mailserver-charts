@@ -1295,7 +1295,7 @@ fetchmail:
   image:
     registry: ghcr.io
     repository: jeboehm/fetchmailmgr
-    tag: 0.3.16@sha256:010afac3d3e75fe9799b13aa02cab15e1ad1e0afcaab0c1e06903e40bef21922
+    tag: 0.3.17@sha256:4a97172adc3bcf41cc6f05425dea3b74de70d7bb61a6277486cbd084c4914acf
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
     ##
