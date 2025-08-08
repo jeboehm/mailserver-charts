@@ -2121,7 +2121,7 @@ redis:
   image:
     registry: docker.io
     repository: bitnami/redis
-    tag: 7.4.3-debian-12-r0
+    tag: 8.2.0-debian-12-r0@sha256:942271e7b024af7464a6de564d453a35bf4e674afe81333e6fe6c5141b100e84
     digest: ''
     ## Specify a imagePullPolicy
     ## ref: https://kubernetes.io/docs/concepts/containers/images/#pre-pulled-images
