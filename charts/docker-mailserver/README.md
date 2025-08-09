@@ -1,6 +1,6 @@
 # docker-mailserver
 
-![Version: 0.2.47](https://img.shields.io/badge/Version-0.2.47-informational?style=flat-square) ![AppVersion: 5.0.74](https://img.shields.io/badge/AppVersion-5.0.74-informational?style=flat-square)
+![Version: 0.2.48](https://img.shields.io/badge/Version-0.2.48-informational?style=flat-square) ![AppVersion: 5.0.75](https://img.shields.io/badge/AppVersion-5.0.75-informational?style=flat-square)
 
 Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible.
 
