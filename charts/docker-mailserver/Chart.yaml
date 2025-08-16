@@ -4,7 +4,7 @@ description: Docker Mailserver based on the famous ISPMail guide. All images are
   based on Alpine Linux and are so small as possible.
 sources:
 - https://github.com/jeboehm/docker-mailserver
-version: 0.2.51
+version: 0.2.52
 keywords:
 - postfix
 - dovecot
@@ -15,7 +15,7 @@ keywords:
 - docker-mailserver
 - fetchmail
 - rspamd
-appVersion: 5.0.78
+appVersion: 5.0.79
 maintainers:
 - name: jeboehm
 dependencies:
