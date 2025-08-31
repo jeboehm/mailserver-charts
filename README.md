@@ -6,5 +6,5 @@ Contains Helm charts for [docker-mailserver](https://github.com/jeboehm/docker-m
 <!-- table_start -->
 |        Name       | Type |                                                       Description                                                       | Version | App Version |
 | :---------------: | :--: | :---------------------------------------------------------------------------------------------------------------------: | :-----: | :---------: |
-| docker-mailserver | None | Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible. |  0.2.57 |    5.0.84   |
+| docker-mailserver | None | Docker Mailserver based on the famous ISPMail guide. All images are based on Alpine Linux and are so small as possible. |  0.2.58 |    5.0.85   |
 <!-- table_end -->
