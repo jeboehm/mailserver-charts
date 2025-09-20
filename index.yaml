@@ -20,6 +20,60 @@ entries:
           image: docker.io/bitnami/redis:latest
       licenses: MIT
     apiVersion: v2
+    appVersion: 5.0.92
+    created: "2025-09-20T05:31:21.922795153Z"
+    dependencies:
+    - condition: redis.enabled
+      name: redis
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 20.13.4
+    - condition: mariadb.enabled
+      name: mariadb
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 20.5.9
+    - name: common
+      repository: oci://registry-1.docker.io/bitnamicharts
+      version: 2.31.4
+    description: Docker Mailserver based on the famous ISPMail guide. All images are
+      based on Alpine Linux and are so small as possible.
+    digest: d27e8597e7a3daae6cdad3225ea609627313d192c8c5a7494f934f851059080e
+    keywords:
+    - postfix
+    - dovecot
+    - mail
+    - mailserver
+    - smtp
+    - imap
+    - docker-mailserver
+    - fetchmail
+    - rspamd
+    maintainers:
+    - name: jeboehm
+    name: docker-mailserver
+    sources:
+    - https://github.com/jeboehm/docker-mailserver
+    urls:
+    - https://github.com/jeboehm/mailserver-charts/releases/download/docker-mailserver-0.2.65/docker-mailserver-0.2.65.tgz
+    version: 0.2.65
+  - annotations:
+      category: Mail
+      images: |
+        - name: mailserver-mta
+          image: docker.io/jeboehm/mailserver-mta:latest
+        - name: mailserver-mda
+          image: docker.io/jeboehm/mailserver-mda:latest
+        - name: mailserver-filter
+          image: docker.io/jeboehm/mailserver-filter:latest
+        - name: mailserver-web
+          image: docker.io/jeboehm/mailserver-web:latest
+        - name: mailserver-virus
+          image: docker.io/jeboehm/mailserver-virus:latest
+        - name: fetchmailmgr
+          image: ghcr.io/jeboehm/fetchmailmgr:latest
+        - name: redis
+          image: docker.io/bitnami/redis:latest
+      licenses: MIT
+    apiVersion: v2
     appVersion: 5.0.91
     created: "2025-09-20T01:20:04.931039482Z"
     dependencies:
@@ -6077,4 +6131,4 @@ entries:
     urls:
     - https://github.com/jeboehm/mailserver-charts/releases/download/docker-mailserver-0.0.1/docker-mailserver-0.0.1.tgz
     version: 0.0.1
-generated: "2025-09-20T01:20:04.931349952Z"
+generated: "2025-09-20T05:31:21.92312962Z"
